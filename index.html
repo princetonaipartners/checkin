@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customer Check-In</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+    input, button, label { display: block; margin: 10px 0; width: 100%; padding: 8px; }
+    #extra-fields, #service-fields, #final-submit { display: none; }
+  </style>
+</head>
+<body>
+  <h2>Customer Check-In</h2>
+
+  <form id="phone-form">
+    <input type="tel" id="phone" placeholder="Enter your phone number" required />
+    <button type="submit">Check In</button>
+  </form>
+
+  <div id="extra-fields">
+    <input type="text" id="name" placeholder="Name" />
+    <input type="email" id="email" placeholder="Email" />
+  </div>
+
+  <div id="service-fields">
+    <label>Select your service(s):</label>
+    <div id="services"></div>
+  </div>
+
+  <button id="final-submit">Submit Visit</button>
+
+  <script>
+    const phoneForm = document.getElementById('phone-form');
+    const finalSubmitBtn = document.getElementById('final-submit');
+
+    let customerPhone = "";
+
+    phoneForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const phone = document.getElementById('phone').value.trim();
+      customerPhone = phone;
+
+      const res = await fetch('https://princetonai.app.n8n.cloud/webhook/checkin-lookup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone })
+      });
+
+      const data = await res.json();
+
+      if (data.status === 'returning') {
+        alert(data.message);
+      } else if (data.status === 'new') {
+        document.getElementById('extra-fields').style.display = 'block';
+      }
+
+      // Always show service options
+      const serviceDiv = document.getElementById('services');
+      serviceDiv.innerHTML = '';
+      (data.services || []).forEach(service => {
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = 'services';
+        checkbox.value = service;
+        const label = document.createElement('label');
+        label.textContent = service;
+        label.prepend(checkbox);
+        serviceDiv.appendChild(label);
+      });
+      document.getElementById('service-fields').style.display = 'block';
+      finalSubmitBtn.style.display = 'block';
+    });
+
+    finalSubmitBtn.addEventListener('click', async () => {
+      const name = document.getElementById('name')?.value || null;
+      const email = document.getElementById('email')?.value || null;
+      const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
+
+      const payload = {
+        phone: customerPhone,
+        ...(name && { name }),
+        ...(email && { email }),
+        services
+      };
+
+      const res = await fetch('https://princetonai.app.n8n.cloud/webhook/checkin-submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await res.json();
+      alert(result.message);
+      location.reload();
+    });
+  </script>
+</body>
+</html>
