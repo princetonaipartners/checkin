@@ -1,98 +1,429 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Customer Check-In</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body { font-family: sans-serif; padding: 20px; max-width: 500px; margin: auto; }
-    input, button, label { display: block; margin: 10px 0; width: 100%; padding: 8px; }
-    #extra-fields, #service-fields, #final-submit { display: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Check-in</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 450px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input[type="tel"],
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .service-checkbox {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .service-checkbox:hover {
+            border-color: #667eea;
+            background: #f8f8ff;
+        }
+        
+        .service-checkbox.selected {
+            border-color: #667eea;
+            background: #f8f8ff;
+        }
+        
+        .service-checkbox input {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+        
+        .service-checkbox label {
+            margin: 0;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .message {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .visit-count {
+            background: #f8f8ff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
-  <h2>Customer Check-In</h2>
-
-  <form id="phone-form">
-    <input type="tel" id="phone" placeholder="Enter your phone number" required />
-    <button type="submit">Check In</button>
-  </form>
-
-  <div id="extra-fields">
-    <input type="text" id="name" placeholder="Name" />
-    <input type="email" id="email" placeholder="Email" />
-  </div>
-
-  <div id="service-fields">
-    <label>Select your service(s):</label>
-    <div id="services"></div>
-  </div>
-
-  <button id="final-submit">Submit Visit</button>
-
-  <script>
-    const phoneForm = document.getElementById('phone-form');
-    const finalSubmitBtn = document.getElementById('final-submit');
-
-    let customerPhone = "";
-
-    phoneForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const phone = document.getElementById('phone').value.trim();
-      customerPhone = phone;
-
-      const res = await fetch('https://princetonai.app.n8n.cloud/webhook-test/checkin-lookup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone })
-      });
-
-      const data = await res.json();
-
-      if (data.status === 'returning') {
-        alert(data.message);
-      } else if (data.status === 'new') {
-        document.getElementById('extra-fields').style.display = 'block';
-      }
-
-      // Always show service options
-      const serviceDiv = document.getElementById('services');
-      serviceDiv.innerHTML = '';
-      (data.services || []).forEach(service => {
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.name = 'services';
-        checkbox.value = service;
-        const label = document.createElement('label');
-        label.textContent = service;
-        label.prepend(checkbox);
-        serviceDiv.appendChild(label);
-      });
-      document.getElementById('service-fields').style.display = 'block';
-      finalSubmitBtn.style.display = 'block';
-    });
-
-    finalSubmitBtn.addEventListener('click', async () => {
-      const name = document.getElementById('name')?.value || null;
-      const email = document.getElementById('email')?.value || null;
-      const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(cb => cb.value);
-
-      const payload = {
-        phone: customerPhone,
-        ...(name && { name }),
-        ...(email && { email }),
-        services
-      };
-
-      const res = await fetch('https://princetonai.app.n8n.cloud/webhook/production/checkin-submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      const result = await res.json();
-      alert(result.message);
-      location.reload();
-    });
-  </script>
+    <div class="container">
+        <h1>✨ Welcome to Salon</h1>
+        <p class="subtitle">Quick & Easy Check-in</p>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="checkinForm">
+            <!-- Phone Number - Always Required -->
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+            </div>
+            
+            <!-- Additional Fields - Show after phone check -->
+            <div id="additionalFields" class="hidden">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" name="name" placeholder="Jane Doe">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="jane@example.com">
+                </div>
+            </div>
+            
+            <!-- Services Selection -->
+            <div class="form-group">
+                <label>What services are you here for today?</label>
+                <div class="services">
+                    <div class="service-checkbox" data-service="Hair">
+                        <input type="checkbox" id="hair" name="services" value="Hair">
+                        <label for="hair">💇‍♀️ Hair</label>
+                    </div>
+                    <div class="service-checkbox" data-service="Makeup">
+                        <input type="checkbox" id="makeup" name="services" value="Makeup">
+                        <label for="makeup">💄 Makeup</label>
+                    </div>
+                    <div class="service-checkbox" data-service="Eyebrows">
+                        <input type="checkbox" id="eyebrows" name="services" value="Eyebrows">
+                        <label for="eyebrows">👁️ Eyebrows</label>
+                    </div>
+                    <div class="service-checkbox" data-service="Nails">
+                        <input type="checkbox" id="nails" name="services" value="Nails">
+                        <label for="nails">💅 Nails</label>
+                    </div>
+                    <div class="service-checkbox" data-service="Facial">
+                        <input type="checkbox" id="facial" name="services" value="Facial">
+                        <label for="facial">🧖‍♀️ Facial</label>
+                    </div>
+                    <div class="service-checkbox" data-service="Other">
+                        <input type="checkbox" id="other" name="services" value="Other">
+                        <label for="other">✨ Other</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SMS Opt-in -->
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="smsOptin" name="smsOptin">
+                    Send me exclusive offers via SMS
+                </label>
+            </div>
+            
+            <button type="submit" id="submitBtn">Check In</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing your check-in...</p>
+        </div>
+    </div>
+    
+    <script>
+        // Configuration - Update this with your n8n webhook URL
+        const WEBHOOK_URL = 'http://localhost:5678/webhook/ai-checkin';
+        
+        // Form handling
+        const form = document.getElementById('checkinForm');
+        const phoneInput = document.getElementById('phone');
+        const additionalFields = document.getElementById('additionalFields');
+        const loading = document.getElementById('loading');
+        const message = document.getElementById('message');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Service checkbox handling
+        document.querySelectorAll('.service-checkbox').forEach(box => {
+            box.addEventListener('click', function(e) {
+                if (e.target.type !== 'checkbox') {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                }
+                this.classList.toggle('selected', this.querySelector('input').checked);
+            });
+        });
+        
+        // Phone formatting
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 6) {
+                value = (${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)};
+            } else if (value.length >= 3) {
+                value = (${value.slice(0,3)}) ${value.slice(3)};
+            }
+            e.target.value = value;
+            
+            // Show additional fields for new customers after entering phone
+            if (value.replace(/\D/g, '').length === 10) {
+                checkCustomerStatus();
+            }
+        });
+        
+        async function checkCustomerStatus() {
+            const phone = phoneInput.value.replace(/\D/g, '');
+            
+            try {
+                // Quick check to see if we need additional fields
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, services: [] })
+                });
+                
+                const data = await response.json();
+                
+                if (data.isNewCustomer) {
+                    additionalFields.classList.remove('hidden');
+                    document.getElementById('name').required = true;
+                } else {
+                    additionalFields.classList.add('hidden');
+                    document.getElementById('name').required = false;
+                }
+            } catch (error) {
+                // If check fails, show fields to be safe
+                additionalFields.classList.remove('hidden');
+            }
+        }
+        
+        // Form submission
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get selected services
+            const services = [];
+            document.querySelectorAll('input[name="services"]:checked').forEach(cb => {
+                services.push(cb.value);
+            });
+            
+            if (services.length === 0) {
+                showMessage('Please select at least one service', 'error');
+                return;
+            }
+            
+            // Prepare data
+            const formData = {
+                phone: phoneInput.value.replace(/\D/g, ''),
+                name: document.getElementById('name').value || null,
+                email: document.getElementById('email').value || null,
+                services: services,
+                smsOptin: document.getElementById('smsOptin').checked
+            };
+            
+            // Show loading
+            form.style.display = 'none';
+            loading.classList.add('active');
+            message.className = 'message';
+            
+            try {
+                // Send to n8n webhook
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                // Hide loading
+                loading.classList.remove('active');
+                
+                if (result.success) {
+                    // Show success message
+                    let successMsg = result.message || 'Check-in successful!';
+                    
+                    if (result.visits) {
+                        successMsg += <br><br><div class="visit-count">Visit #${result.visits}</div>;
+                    }
+                    
+                    if (result.hasReward && result.rewardMessage) {
+                        successMsg += `<br><div style="background: gold; padding: 15px; border-radius: 10px; margin-top: 10px;">
+                            🎉 ${result.rewardMessage}
+                        </div>`;
+                    }
+                    
+                    showMessage(successMsg, 'success');
+                    
+                    // Reset form after 5 seconds
+                    setTimeout(() => {
+                        form.reset();
+                        form.style.display = 'block';
+                        message.className = 'message';
+                        additionalFields.classList.add('hidden');
+                        document.querySelectorAll('.service-checkbox').forEach(box => {
+                            box.classList.remove('selected');
+                        });
+                    }, 5000);
+                    
+                } else {
+                    throw new Error(result.message || 'Check-in failed');
+                }
+                
+            } catch (error) {
+                loading.classList.remove('active');
+                form.style.display = 'block';
+                showMessage('Error: ' + error.message, 'error');
+            }
+        });
+        
+        function showMessage(text, type) {
+            message.innerHTML = text;
+            message.className = message ${type};
+            
+            if (type === 'error') {
+                setTimeout(() => {
+                    message.className = 'message';
+                }, 3000);
+            }
+        }
+    </script>
 </body>
 </html>
