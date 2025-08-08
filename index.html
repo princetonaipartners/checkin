@@ -40,7 +40,7 @@
       const phone = document.getElementById('phone').value.trim();
       customerPhone = phone;
 
-      const res = await fetch('https://princetonai.app.n8n.cloud/webhook/checkin-lookup', {
+      const res = await fetch('https://princetonai.app.n8n.cloud/webhook/production/checkin-lookup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone })
@@ -83,7 +83,7 @@
         services
       };
 
-      const res = await fetch('https://princetonai.app.n8n.cloud/webhook/checkin-submit', {
+      const res = await fetch('https://princetonai.app.n8n.cloud/webhook/production/checkin-submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
