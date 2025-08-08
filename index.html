@@ -40,7 +40,7 @@
       const phone = document.getElementById('phone').value.trim();
       customerPhone = phone;
 
-      const res = await fetch('https://princetonai.app.n8n.cloud/webhook-test/checkin-lookup', {
+      const res = await fetch('https://princetonai.app.n8n.cloud/webhook/checkin-lookup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone })
