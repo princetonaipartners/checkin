@@ -2,397 +2,334 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1"
-  />
-  <title>Welcome to Our Salon — Quick Check-in</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome to Our Salon — Check-In</title>
   <style>
     :root{
-      --bg1:#7b5cff;
-      --bg2:#a78bfa;
-      --card:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --ok:#e8f7ee;
-      --okText:#036757;
-      --err:#ffecec;
-      --errText:#991b1b;
-      --accent:#6d28d9;
-      --accent2:#8b5cf6;
-      --ring:#e9d5ff;
-      --shadow:0 20px 40px rgba(0,0,0,.08);
+      --bg: #f6f5ff;
+      --card: #ffffff;
+      --ink: #171717;
+      --muted:#636363;
+      --hint:#8a8a8a;
+      --primary:#6c47ff;
+      --primary-900:#5d3de3;
+      --ring:#eae7ff;
+      --ok:#eaf7ef;
+      --ok-ink:#1f7a3e;
+      --warn:#fff3f0;
+      --warn-ink:#8a3c32;
+      --soft:#f7f8ff;
     }
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";
-      background: radial-gradient(1200px 800px at 10% 10%, var(--bg2), transparent),
-                  radial-gradient(1400px 900px at 90% 0%, var(--bg1), transparent),
-                  #f8fafc;
-      color:var(--text);
+    html,body{margin:0;padding:0;background:
+      radial-gradient(1000px 600px at 10% 0%, #a089ff 0%, transparent 60%),
+      radial-gradient(1000px 600px at 90% 0%, #caa8ff 0%, transparent 60%),
+      var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color:var(--ink);
     }
-    .wrap{
-      max-width: 920px;
-      margin: 24px auto;
-      padding: 0 16px;
-    }
-    .card{
-      background:var(--card);
-      border-radius:20px;
-      box-shadow: var(--shadow);
-      padding: 28px 28px 32px;
-    }
-    h1{
-      font-size: clamp(28px, 3.6vw, 40px);
-      letter-spacing:.3px;
-      margin: 0 0 6px;
-    }
-    .sub{color:var(--muted); margin-bottom: 18px}
-
-    .row{display:grid; grid-template-columns:1fr 1fr; gap:16px}
-    @media (max-width: 720px){ .row{grid-template-columns:1fr} }
-
-    label.lbl{
-      display:block;
-      font-weight:600;
-      margin: 14px 0 6px;
-    }
-    .field{
-      display:flex;align-items:center;gap:10px;
-      border:1px solid #e5e7eb;
-      border-radius:12px;
-      padding:12px 14px;
-      background:#fff;
-      outline:none;
-      width:100%;
-      transition: box-shadow .15s, border-color .15s;
-    }
-    .field:focus-within{
-      border-color:var(--accent2);
-      box-shadow:0 0 0 4px var(--ring);
-    }
+    .wrap{max-width:860px;margin:32px auto;padding:24px}
+    .card{background:var(--card); border-radius:18px; box-shadow:0 8px 30px rgba(40,30,90,.08); padding:28px}
+    h1{font-size:38px; line-height:1.15; margin:0 0 6px}
+    .lead{color:var(--muted); margin-bottom:18px}
+    .row{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    .full{grid-column:1/-1}
+    label{display:block; font-weight:600; margin:14px 0 8px}
+    .subtle{font-weight:500; color:var(--hint); margin-top:6px}
     input[type="text"], input[type="email"], input[type="date"]{
-      border:0;outline:0;font-size:16px;flex:1;min-width:0;background:transparent;
+      width:100%; font-size:16px; padding:12px 14px; border-radius:12px; border:1px solid #e3e3ef; outline:0;
+      transition:border-color .15s, box-shadow .15s; background:#fff;
     }
-
-    .services{
-      display:grid;grid-template-columns:1fr 1fr; gap:14px;
-      margin-top:8px;
+    input[type="text"]:focus, input[type="email"]:focus, input[type="date"]:focus{
+      border-color:#cfcafc; box-shadow:0 0 0 3px var(--ring);
     }
-    @media (max-width:720px){ .services{grid-template-columns:1fr} }
-    .svc{
-      border:1px solid #e5e7eb;border-radius:12px;padding:14px 14px;
-      display:flex;align-items:center; gap:10px;
-      background:#fff;
-    }
-    .svc input{width:18px;height:18px}
-    .muted{color:var(--muted); font-size:14px}
-
-    .row.optin{ grid-template-columns: 1fr; }
-    .optincard{
-      border:1px dashed #e5e7eb;border-radius:12px;padding:14px;
-      display:flex;gap:10px;align-items:center;background:#fff;
-    }
-
-    .btn{
-      display:block; width:100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      color:#fff;font-weight:700; letter-spacing:.3px;
-      border:0;border-radius:14px; padding:16px 18px; margin-top:20px;
-      box-shadow: 0 8px 24px rgba(109,40,217,.25);
-      transition: transform .06s ease-in-out, filter .15s;
-      cursor:pointer;
-    }
-    .btn:active{ transform: translateY(1px) }
-    .btn[disabled]{ opacity:.7; filter:grayscale(.15); cursor:not-allowed }
-
-    .banner{
-      border-radius:12px; padding:12px 14px; margin:12px 0 18px; display:none;
-      font-weight:600;
-    }
-    .banner.ok{ display:block; background: var(--ok); color: var(--okText) }
-    .banner.err{ display:block; background: var(--err); color: var(--errText) }
-
-    .hidden{ display:none !important }
-
-    .result{
-      margin-top:14px; padding:18px; border-radius:16px;
-      background: linear-gradient(180deg,#fbfbff,#f7f6ff);
-      border:1px solid #ebe7ff;
-    }
-    .result h3{ margin:0 0 8px; font-size:20px }
-    .result .muted{ font-style: italic }
-    .donebtn{ margin-top:16px }
+    .alert{padding:12px 14px; border-radius:12px; margin-bottom:18px; display:none}
+    .alert.ok{display:block; background:var(--ok); color:var(--ok-ink)}
+    .alert.warn{display:block; background:var(--warn); color:var(--warn-ink)}
+    .pill{display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid #ecebff; border-radius:12px; cursor:pointer; user-select:none; background:var(--soft)}
+    .pill input{width:18px;height:18px}
+    .grid-3{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    @media(min-width:720px){.grid-3{grid-template-columns:repeat(3,1fr)}}
+    .cta{display:block; width:100%; margin-top:18px; border:0; color:#fff; font-weight:700; font-size:18px; padding:16px 18px; border-radius:14px; cursor:pointer; background:linear-gradient(90deg, var(--primary), #7a5bff)}
+    .cta:hover{background:linear-gradient(90deg, var(--primary-900), #6c47ff)}
+    .divider{height:1px; background:#efeefe; margin:16px 0}
+    .hidden{display:none !important}
+    .summary{background:#fbfbff;border:1px solid #ecebff;border-radius:14px;padding:18px}
+    .summary b{font-weight:700}
+    .note{color:var(--muted); font-style:italic; margin-top:8px}
+    .banner{padding:12px 14px; border-radius:12px; background:#f2f6ff; border:1px solid #e6ebff; color:#324071; margin:10px 0 0}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <h1>Welcome to Our Salon</h1>
-      <div class="sub">Quick &amp; Easy Check-in</div>
+      <div class="lead">Quick &amp; Easy Check-in</div>
 
-      <div id="banner" class="banner"></div>
+      <!-- alerts -->
+      <div id="alert" class="alert"></div>
 
-      <form id="form" novalidate>
-        <!-- Phone -->
-        <label class="lbl" for="phone">📞 Phone Number *</label>
-        <div class="field">
-          <input id="phone" type="text" inputmode="numeric" autocomplete="tel" placeholder="(123) 456-7890" maxlength="14" />
-        </div>
-        <div class="muted" style="margin-top:6px">We’ll use this to find your profile and reward progress.</div>
-
-        <!-- Extra fields: only shown if backend signals we need a profile -->
-        <div id="extra-fields" class="hidden">
-          <div class="row">
-            <div>
-              <label class="lbl" for="fullName">👤 Full Name *</label>
-              <div class="field"><input id="fullName" type="text" placeholder="Jane Doe" /></div>
-            </div>
-            <div>
-              <label class="lbl" for="email">✉️ Email (Optional)</label>
-              <div class="field"><input id="email" type="email" placeholder="jane@example.com" /></div>
-            </div>
-          </div>
-
-          <label class="lbl" for="birthday">🎂 Birthday *</label>
-          <div class="field" style="max-width:420px">
-            <input id="birthday" type="date" />
-          </div>
-          <div class="muted" style="margin-top:6px">You’ll get a birthday reward 🎉</div>
-
-          <div class="row optin">
-            <label class="optincard" for="smsOptin">
-              <input id="smsOptin" type="checkbox" />
-              <div>
-                <div><strong>Send me exclusive offers &amp; rewards via SMS</strong></div>
-                <div class="muted">We’ll only text about rewards and salon offers.</div>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- Services -->
-        <label class="lbl" style="margin-top:18px">What services are you here for today?</label>
-        <div class="services">
-          <label class="svc"><input type="checkbox" value="Hair" /> 💇 Hair</label>
-          <label class="svc"><input type="checkbox" value="Makeup" /> 💄 Makeup</label>
-          <label class="svc"><input type="checkbox" value="Eyebrows" /> 👁️ Eyebrows</label>
-          <label class="svc"><input type="checkbox" value="Nails" /> 💅 Nails</label>
-          <label class="svc"><input type="checkbox" value="Facial" /> 💆 Facial</label>
-          <label class="svc"><input type="checkbox" value="Other" /> ✨ Other</label>
-        </div>
-
-        <button id="checkin-btn" class="btn" type="submit">Check In</button>
-      </form>
-
-      <!-- RESULT -->
-      <div id="result-wrap" class="hidden">
-        <div class="result" id="result-card"></div>
-        <button class="btn donebtn" id="done-btn">Done</button>
+      <!-- summary -->
+      <div id="summaryBox" class="summary hidden">
+        <div id="thanksLine" style="font-weight:800; font-size:18px; margin-bottom:8px;">Thanks for checking in!</div>
+        <div id="rewardLine" style="margin-bottom:8px;"></div>
+        <div><b>Services today:</b> <span id="servicesToday">—</span></div>
+        <div class="note" id="cashierNote">Show reward code at checkout if present.</div>
+        <button class="cta" id="doneBtn" style="margin-top:16px">Done</button>
       </div>
+
+      <!-- form -->
+      <form id="checkinForm" class="hidden">
+        <!-- profile banner (only visible when we need profile) -->
+        <div id="profileBanner" class="banner hidden">
+          We couldn't verify your profile automatically — please add your <b>name</b> and <b>birthday</b>.
+        </div>
+
+        <!-- phone -->
+        <div class="full">
+          <label for="phone">📞 Phone Number *</label>
+          <input id="phone" name="phone" type="text" inputmode="numeric" autocomplete="tel" placeholder="(123) 456-7890" />
+          <div class="subtle">We use this to find your profile and reward progress.</div>
+        </div>
+
+        <!-- profile fields (hidden on first submit) -->
+        <div id="profileFields" class="row hidden" aria-hidden="true">
+          <div>
+            <label for="name">👤 Full Name *</label>
+            <input id="name" name="name" type="text" placeholder="Jane Doe" />
+          </div>
+          <div>
+            <label for="email">✉️ Email (Optional)</label>
+            <input id="email" name="email" type="email" placeholder="jane@example.com" />
+          </div>
+          <div class="full">
+            <label for="birthday">🎂 Birthday *</label>
+            <input id="birthday" name="birthday" type="date" />
+            <div class="subtle">You'll get a birthday reward 🎉</div>
+          </div>
+
+          <div class="full">
+            <label class="pill">
+              <input id="smsOptin" type="checkbox" />
+              <span>📱 Send me exclusive offers &amp; rewards via SMS</span>
+            </label>
+            <div class="subtle">We’ll only text about rewards and salon offers.</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- services -->
+        <label class="full">What services are you here for today?</label>
+        <div class="grid-3">
+          <label class="pill"><input type="checkbox" class="svc" value="Hair" /> 💇‍♀️ Hair</label>
+          <label class="pill"><input type="checkbox" class="svc" value="Makeup" /> 💄 Makeup</label>
+          <label class="pill"><input type="checkbox" class="svc" value="Eyebrows" /> 👁️ Eyebrows</label>
+          <label class="pill"><input type="checkbox" class="svc" value="Nails" /> 💅 Nails</label>
+          <label class="pill"><input type="checkbox" class="svc" value="Facial" /> ✨ Facial</label>
+          <label class="pill"><input type="checkbox" class="svc" value="Other" /> ✨ Other</label>
+        </div>
+
+        <button id="submitBtn" class="cta">Check In</button>
+      </form>
     </div>
   </div>
 
   <script>
-    // ─────────────────────────── Config ───────────────────────────
-    const ENDPOINT = "https://princetonai.app.n8n.cloud/webhook-test/ai-checkin";
+    // ---------- CONFIG ----------
+    const WEBHOOK_URL = 'https://princetonai.app.n8n.cloud/webhook-test/ai-checkin';
 
-    // ─────────────────────────── Utilities ───────────────────────────
-    const $ = (id) => document.getElementById(id);
-    function setBanner(msg, type = "ok") {
-      const el = $("banner");
-      if (!msg) { el.style.display = "none"; el.textContent = ""; return; }
-      el.className = "banner " + (type === "error" || type === "err" ? "err" : "ok");
-      el.textContent = msg;
-      el.style.display = "block";
-    }
-    function genId(){
-      const t = Date.now().toString(36), r = Math.random().toString(36).slice(2, 8);
-      return `v${t}${r}`;
-    }
-    function getSelectedServices(){
-      const labels = document.querySelectorAll(".services .svc input[type='checkbox']");
-      const out = [];
-      labels.forEach(c => { if (c.checked) out.push(c.value); });
-      return out;
-    }
-    function visitsLeftToFive(total) {
-      if (typeof total !== 'number' || isNaN(total) || total < 0) return null;
-      const mod = total % 5;
-      return mod === 0 ? 5 : (5 - mod);
-    }
+    // ---------- STATE ----------
+    let submissionId = null;   // visit/session id from backend
+    let profileMode   = false; // true after backend asks for profile
+    let lastServices  = [];    // keep selected services between steps
 
-    // Phone mask – caret-safe
-    const phoneInput = $("phone");
-    phoneInput.addEventListener("input", () => {
-      const digits = phoneInput.value.replace(/\D/g, "").slice(0, 10);
-      let out = digits;
-      if (digits.length > 6) out = `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
-      else if (digits.length > 3) out = `(${digits.slice(0,3)}) ${digits.slice(3)}`;
-      else if (digits.length > 0) out = `(${digits}`;
-      phoneInput.value = out;
-      phoneInput.setSelectionRange(out.length, out.length);
+    // ---------- ELEMENTS ----------
+    const alertBox      = document.getElementById('alert');
+    const form          = document.getElementById('checkinForm');
+    const submitBtn     = document.getElementById('submitBtn');
+    const profileFields = document.getElementById('profileFields');
+    const profileBanner = document.getElementById('profileBanner');
+    const phoneInput    = document.getElementById('phone');
+    const nameInput     = document.getElementById('name');
+    const emailInput    = document.getElementById('email');
+    const birthdayInput = document.getElementById('birthday');
+    const smsOptin      = document.getElementById('smsOptin');
+    const svcBoxes      = Array.from(document.querySelectorAll('.svc'));
+    const summaryBox    = document.getElementById('summaryBox');
+    const thanksLine    = document.getElementById('thanksLine');
+    const rewardLine    = document.getElementById('rewardLine');
+    const servicesToday = document.getElementById('servicesToday');
+    const cashierNote   = document.getElementById('cashierNote');
+    const doneBtn       = document.getElementById('doneBtn');
+
+    // ---------- INIT ----------
+    form.classList.remove('hidden');
+
+    // smooth phone formatting while typing
+    phoneInput.addEventListener('input', (e) => {
+      const pos = e.target.selectionStart;
+      const before = e.target.value;
+      e.target.value = formatPhone(before);
+      // try to keep caret sensible
+      const delta = e.target.value.length - before.length;
+      e.target.setSelectionRange(pos + (delta>0?1:0), pos + (delta>0?1:0));
     });
 
-    // Robust profile-needed detection (covers multiple possible flags)
-    function responseWantsProfile(d){
-      if (!d || typeof d !== 'object') return false;
-      const msg = (d.message || "").toLowerCase();
-      const flags = [
-        d.needsProfile, d.requireProfile, d.profileRequired,
-        d.isNewCustomer, d.newCustomer,
-        d.status === 'needs_profile',
-        d.code === 'NEEDS_PROFILE'
-      ];
-      if (flags.some(Boolean)) return true;
-      if (d.success === false && /profile|name|birthday/.test(msg)) return true;
-      return false;
-    }
+    form.addEventListener('submit', onSubmit);
+    doneBtn.addEventListener('click', () => {
+      // simple UX: scroll to top or reset
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
 
-    // ─────────────────────────── Submit helpers ───────────────────────────
-    function buildPayloadFromForm(){
-      const rawPhone = $("phone").value;
-      const phoneDigits = (rawPhone || "").replace(/\D/g, "").slice(0, 10);
-      const extraShown = !$("extra-fields").classList.contains("hidden");
-      return {
-        submissionId: genId(),
-        phone: phoneDigits,
-        services: getSelectedServices(),
-        // let backend know which phase we're in (optional hint)
-        phase: extraShown ? "final" : "probe",
-        name:     extraShown ? ($("fullName").value.trim() || undefined) : undefined,
-        email:    extraShown ? ($("email").value.trim()     || undefined) : undefined,
-        birthday: extraShown ? ($("birthday").value         || undefined) : undefined,
-        smsOptin: extraShown ? $("smsOptin").checked === true : undefined
-      };
+    // ---------- HELPERS ----------
+    function showAlert(kind, msg){
+      alertBox.className = 'alert ' + (kind === 'ok' ? 'ok' : 'warn');
+      alertBox.textContent = msg;
+      alertBox.style.display = 'block';
     }
-
-    function revealExtraFields(message){
-      $("extra-fields").classList.remove("hidden");
-      $("checkin-btn").textContent = "Save & Check In";
-      if (message) setBanner(message, "ok");
-      setTimeout(() => $("fullName").focus(), 60);
+    function clearAlert(){
+      alertBox.style.display = 'none';
     }
-
-    function validateExtraFieldsIfShown(){
-      const visible = !$("extra-fields").classList.contains("hidden");
-      if (!visible) return true;
-      const nm = $("fullName").value.trim();
-      const bd = $("birthday").value;
-      if (!nm) { setBanner("Please enter your full name.", "err"); $("fullName").focus(); return false; }
-      if (!bd) { setBanner("Please select your birthday.", "err"); $("birthday").focus(); return false; }
-      return true;
+    function formatPhone(v){
+      let d = (v || '').replace(/\D/g,'');
+      if (d.length > 11) d = d.slice(0,11);
+      if (d.length === 11 && d.startsWith('1')) d = d.slice(1);
+      if (d.length <= 3) return d ? '(' + d : '';
+      if (d.length <= 6) return '(' + d.slice(0,3) + ') ' + d.slice(3);
+      return '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6,10);
     }
+    function normalizePhone(v){
+      let d = (v || '').replace(/\D/g,'');
+      if (d.length === 11 && d.startsWith('1')) d = d.slice(1);
+      return d.slice(0,10);
+    }
+    function getSelectedServices(){
+      return svcBoxes.filter(x => x.checked).map(x => x.value);
+    }
+    function getBirthdayISO(){
+      const v = birthdayInput.value;       // if input[type=date], browser gives yyyy-mm-dd already
+      if (!v) return '';
+      // Ensure yyyy-mm-dd
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+      if (m) return v;
+      // If user typed mm/dd/yyyy
+      const m2 = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v);
+      if (m2) return `${m2[3]}-${m2[1]}-${m2[2]}`;
+      return v;
+    }
+    function toggleProfileMode(on){
+      profileMode = !!on;
+      profileFields.classList.toggle('hidden', !on);
+      profileFields.setAttribute('aria-hidden', on ? 'false':'true');
+      profileBanner.classList.toggle('hidden', !on);
+      submitBtn.textContent = on ? 'Save & Check In' : 'Check In';
+    }
+    function renderSummary(data){
+      const svcs = Array.isArray(data.services) ? data.services : lastServices;
+      const total = Number(data.totalVisits ?? 0) || 0;
+      const hasReward = !!data.hasReward;
+      const reward = data.reward || null;
 
-    async function submitCheckin(payload){
-      const res = await fetch(ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      if (!res.ok) {
-        const t = await res.text().catch(()=> "");
-        throw new Error(t || "Server error");
+      // visits left until next 5th
+      let left = 5 - (total % 5);
+      if (left === 5) left = 0;
+
+      thanksLine.textContent = data.message || 'Thanks for checking in!';
+      if (hasReward && reward) {
+        // assuming your reward is Free Eyebrows on every 5th
+        rewardLine.textContent = '🎉 You earned a free Eyebrows today!';
+      } else {
+        rewardLine.textContent = `${left || 5} visits left before your next reward (Free Eyebrows).`;
       }
-      return res.json();
+      servicesToday.textContent = svcs && svcs.length ? svcs.join(', ') : '—';
+      cashierNote.textContent = data.cashierNote || 'Show reward code at checkout if present.';
+
+      summaryBox.classList.remove('hidden');
+      form.classList.add('hidden');
+      clearAlert();
     }
 
-    function showResultCard(data, guestName){
-      $("form").classList.add("hidden");
-      const wrap = $("result-wrap");
-      wrap.classList.remove("hidden");
-
-      const svc = Array.isArray(data?.services) ? data.services : [];
-      const svcLine = svc.length ? svc.join(", ") : "—";
-
-      const visits = typeof data?.totalVisits === "number" ? data.totalVisits : null;
-      const left = visitsLeftToFive(visits);
-      const rewardName = "Free Eyebrows";
-
-      const hasReward = !!data?.hasReward;
-      const rewardLine = hasReward
-        ? `<div class="muted">Reward unlocked: <strong>${rewardName}</strong>.</div>`
-        : (left != null ? `<div class="muted">${left} visit${left === 1 ? "" : "s"} left before your next reward (${rewardName}).</div>` : "");
-
-      const msg = (data?.message && data.message.trim()) || `Thanks for checking in${guestName ? ", " + guestName : ""}!`;
-
-      $("result-card").innerHTML = `
-        <h3>${msg}</h3>
-        ${rewardLine}
-        <p style="margin-top:12px"><strong>Services today:</strong> ${svcLine}</p>
-        <div class="muted">${data?.cashierNote || "Show reward code at checkout if present."}</div>
-      `;
-    }
-
-    function resetForNextGuest(){
-      $("result-wrap").classList.add("hidden");
-      $("form").classList.remove("hidden");
-      setBanner("");
-
-      $("phone").value = "";
-      document.querySelectorAll(".services input[type='checkbox']").forEach(c => c.checked = false);
-
-      $("extra-fields").classList.add("hidden");
-      $("fullName").value = "";
-      $("email").value = "";
-      $("birthday").value = "";
-      $("smsOptin").checked = false;
-
-      $("checkin-btn").textContent = "Check In";
-      $("phone").focus();
-    }
-
-    // ─────────────────────────── Submit handler ───────────────────────────
-    $("form").addEventListener("submit", async (e) => {
+    // ---------- SUBMIT FLOW ----------
+    async function onSubmit(e){
       e.preventDefault();
-      const btn = $("checkin-btn");
-      const original = "Check In";
+      clearAlert();
+
+      const phone = normalizePhone(phoneInput.value);
+      if (phone.length !== 10) {
+        showAlert('warn','Please enter a valid 10-digit phone number.');
+        phoneInput.focus();
+        return;
+      }
+
+      // Collect services first (both steps)
+      const services = getSelectedServices();
+      if (!services.length) {
+        showAlert('warn','Please choose at least one service.');
+        return;
+      }
+      lastServices = services.slice();
+
+      // Prepare payload
+      const body = {
+        phone,
+        services
+      };
+
+      if (profileMode) {
+        body.submissionId = submissionId;
+        body.name     = (nameInput.value || '').trim();
+        body.email    = (emailInput.value || '').trim();
+        body.birthday = getBirthdayISO();
+        body.smsOptin = !!smsOptin.checked;
+
+        if (!body.name)    { showAlert('warn','Please enter your full name.'); return; }
+        if (!body.birthday){ showAlert('warn','Please enter your birthday.'); return; }
+      } else {
+        // first pass can include smsOptin if you prefer to collect it early; requested to ask in profile step, so not sending here
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = profileMode ? 'Saving…' : 'Checking in…';
 
       try{
-        const digits = ($("phone").value || "").replace(/\D/g, "");
-        if (digits.length !== 10) { throw new Error("Please enter a valid 10-digit phone number."); }
-        if (!validateExtraFieldsIfShown()) return;
+        const res = await fetch(WEBHOOK_URL, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(body)
+        });
 
-        btn.disabled = true; btn.textContent = "Checking in…";
+        if (!res.ok) {
+          const t = await res.text().catch(()=> '');
+          throw new Error(t || 'Network error');
+        }
 
-        const payload = buildPayloadFromForm();
-        const data = await submitCheckin(payload);
+        const data = await res.json();
 
-        // 🔑 Any of several flags from the backend will trigger the profile step
-        if (responseWantsProfile(data)) {
-          revealExtraFields(data?.message || "We couldn’t verify your phone — please add your name and birthday, then tap “Save & Check In”.");
-          btn.disabled = false; btn.textContent = "Save & Check In";
+        // Branch: backend asks for profile
+        if (data && data.askProfile) {
+          submissionId = data.submissionId || submissionId;
+          toggleProfileMode(true);
+          showAlert('ok', data.message || 'Please add your name & birthday.');
+          // keep phone & services as they are, allow edits if needed
           return;
         }
 
-        // Otherwise, success → summary
-        if (data?.success) {
-          const guestName =
-            (!$("extra-fields").classList.contains("hidden") ? $("fullName").value.trim() : "") || "";
-          setBanner(`Thanks for checking in${guestName ? ", " + guestName : ""}!`, "ok");
-          showResultCard(data, guestName);
-        } else {
-          // If backend didn’t explicitly say needsProfile but also didn’t succeed:
-          // fall back to prompting profile (better than skipping).
-          if (!$("extra-fields").classList.contains("hidden")) {
-            setBanner(data?.message || "Please complete your profile.", "err");
-          } else {
-            revealExtraFields(data?.message || "We couldn’t verify your phone — please add your name and birthday, then tap “Save & Check In”.");
-          }
+        // Otherwise, final summary from Respond Done
+        if (data && data.success) {
+          renderSummary(data);
+          return;
         }
 
+        // If we reach here, show any message we have
+        showAlert('warn', (data && data.message) || 'Unexpected response. Please try again.');
       } catch(err){
         console.error(err);
-        setBanner(err?.message || "Network error. Please try again.", "err");
+        showAlert('warn', 'Failed to fetch');
       } finally {
-        const visible = !$("extra-fields").classList.contains("hidden");
-        btn.disabled = false;
-        btn.textContent = visible ? "Save & Check In" : original;
+        submitBtn.disabled = false;
+        submitBtn.textContent = profileMode ? 'Save & Check In' : 'Check In';
       }
-    });
-
-    $("done-btn").addEventListener("click", resetForNextGuest);
+    }
   </script>
 </body>
 </html>
