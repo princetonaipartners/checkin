@@ -372,6 +372,8 @@
         // For local testing: http://localhost:5678/webhook/ai-salon-checkin-001
         // For production: https://your-n8n-instance.com/webhook/ai-salon-checkin-001
         const WEBHOOK_URL = 'https://princetonai.app.n8n.cloud/webhook-test/ai-checkin';
+        const LOOKUP_URL  = 'https://princetonai.app.n8n.cloud/webhook-test/ai-lookup';
+        function uuid(){return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));}
         
         // Form elements
         const form = document.getElementById('checkinForm');
@@ -410,9 +412,9 @@
             let formatted = value;
             
             if (value.length >= 6) {
-                formatted = (${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)};
+                formatted = `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)}`;
             } else if (value.length >= 3) {
-                formatted = (${value.slice(0,3)}) ${value.slice(3)};
+                formatted = `(${value.slice(0,3)}) ${value.slice(3)}`;
             }
             
             e.target.value = formatted;
@@ -434,16 +436,10 @@
             
             try {
                 // Quick check to see if customer exists
-                const response = await fetch(WEBHOOK_URL, {
+                const response = await fetch(LOOKUP_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        phone: phone,
-                        services: [],
-                        name: null,
-                        email: null,
-                        smsOptin: false
-                    })
+                    body: JSON.stringify({ phone })
                 });
                 
                 if (response.ok) {
@@ -460,8 +456,8 @@
                         // Hide fields for returning customers
                         additionalFields.classList.add('hidden');
                         nameInput.required = false;
-                        const name = data.customerName ? , ${data.customerName} : '';
-                        showMessage(Welcome back${name}! Select your services and check in., 'info');
+                        const name = data.customerName ? `, ${data.customerName}` : '';
+                        showMessage(`Welcome back${name}! Select your services and check in.`, 'info');
                     }
                 }
             } catch (error) {
@@ -503,6 +499,7 @@
             
             // Prepare data
             const formData = {
+                submissionId: uuid(),
                 phone: phone,
                 name: nameInput.value || null,
                 email: emailInput.value || null,
@@ -526,7 +523,7 @@
                 });
                 
                 if (!response.ok) {
-                    throw new Error(Server error: ${response.status});
+                    throw new Error(`Server error: ${response.status}`);
                 }
                 
                 const result = await response.json();
@@ -540,7 +537,7 @@
                     successHtml += '<h2>Check-in Successful!</h2>';
                     
                     // Show the message from the backend
-                    successHtml += <p style="margin: 15px 0; font-size: 18px;">${result.message}</p>;
+                    successHtml += `<p style="margin: 15px 0; font-size: 18px;">${result.message}</p>`;
                     
                     // If not a reward visit, show progress bar
                     if (!result.hasReward && result.visitsUntilReward) {
@@ -564,7 +561,7 @@
                     
                     // Show services selected
                     if (result.services && result.services.length > 0) {
-                        successHtml += <p style="margin-top: 15px; color: #666;">Services: ${result.services.join(', ')}</p>;
+                        successHtml += `<p style=\"margin-top: 15px; color: #666;\">Services: ${result.services.join(', ')}</p>`;
                     }
                     
                     showMessage(successHtml, 'success');
@@ -587,7 +584,7 @@
         
         function showMessage(text, type) {
             message.innerHTML = text;
-            message.className = message ${type};
+            message.className = `message ${type}`;
             
             if (type === 'error') {
                 setTimeout(() => {
