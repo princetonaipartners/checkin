@@ -17,14 +17,11 @@
       --brand: #6d28d9;
       --brand-2: #7c3aed;
       --ok: #16a34a;
-      --warn: #b45309;
       --error: #dc2626;
       --border: #e5e7eb;
       --soft: #f8fafc;
     }
-    html, body {
-      height: 100%;
-    }
+    html, body { height: 100%; }
     body {
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
@@ -34,117 +31,51 @@
                   radial-gradient(900px 900px at 110% 10%, var(--bg2), transparent 50%),
                   #f3f4f6;
     }
-    .wrap {
-      max-width: 760px;
-      margin: 40px auto;
-      padding: 0 16px;
-    }
+    .wrap { max-width: 760px; margin: 40px auto; padding: 0 16px; }
     .card {
       background: var(--card);
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(17, 24, 39, .08);
       padding: 28px;
     }
-    h1 {
-      margin: 0 0 8px 0;
-      font-size: 34px;
-      line-height: 1.2;
-    }
-    .sub {
-      color: var(--muted);
-      margin-bottom: 20px;
-      font-size: 15px;
-    }
+    h1 { margin: 0 0 8px 0; font-size: 34px; line-height: 1.2; }
+    .sub { color: var(--muted); margin-bottom: 20px; font-size: 15px; }
     .row { margin: 14px 0; }
-    .label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
+    .label { display:block; font-weight: 600; margin-bottom: 8px; }
     .input, .select {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      outline: none;
-      font-size: 16px;
-      box-sizing: border-box;
-      background: #fff;
+      width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border);
+      outline: none; font-size: 16px; box-sizing: border-box; background: #fff;
     }
-    .input:focus, .select:focus {
-      border-color: var(--brand);
-      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px;
-    }
+    .input:focus, .select:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14); }
+    .grid-2 { display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
     .svc {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #fff;
-      user-select: none;
-      cursor: pointer;
+      border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px;
+      display:flex; align-items:center; gap:10px; background:#fff; user-select:none; cursor:pointer;
     }
-    .svc input {
-      width: 20px;
-      height: 20px;
-      margin: 0;
-      accent-color: var(--brand);
-    }
+    .svc input { width:20px; height:20px; margin:0; accent-color: var(--brand); }
     .muted { color: var(--muted); }
     .banner {
-      display: none;
-      border-radius: 10px;
-      padding: 12px 14px;
-      margin: 12px 0 14px 0;
-      font-size: 15px;
-      border: 1px solid transparent;
+      display:none; border-radius:10px; padding:12px 14px; margin:12px 0 14px 0;
+      font-size:15px; border:1px solid transparent;
     }
-    .banner.ok { display: block; background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
-    .banner.error { display: block; background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+    .banner.ok { display:block; background:#ecfdf5; color:#065f46; border-color:#a7f3d0; }
+    .banner.error { display:block; background:#fef2f2; color:#991b1b; border-color:#fecaca; }
     .btn-primary {
-      width: 100%;
-      appearance: none;
-      border: 0;
-      border-radius: 12px;
-      padding: 14px 16px;
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
+      width:100%; appearance:none; border:0; border-radius:12px; padding:14px 16px;
+      font-size:16px; font-weight:700; color:#fff;
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(124, 58, 237, .35);
+      cursor:pointer; box-shadow: 0 8px 20px rgba(124, 58, 237, .35);
       transition: transform .04s ease, filter .2s ease;
     }
-    .btn-primary:disabled {
-      opacity: .65;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
+    .btn-primary:disabled { opacity:.65; cursor:not-allowed; box-shadow:none; }
     .btn-primary:hover { filter: brightness(1.02); }
-    .hint { font-size: 13px; color: var(--muted); margin-top: 6px; }
-    .flex-row { display: flex; align-items: center; gap: 10px; }
-    .hidden { display: none !important; }
+    .hint { font-size:13px; color:var(--muted); margin-top:6px; }
+    .hidden { display:none !important; }
 
     /* Result card */
-    .result-box {
-      margin-top: 10px;
-      background: var(--soft);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-    }
+    .result-box { margin-top:10px; background:var(--soft); border:1px solid var(--border);
+      border-radius:12px; padding:16px; }
   </style>
 </head>
 <body>
@@ -156,10 +87,11 @@
       <!-- status banner -->
       <div id="banner" class="banner"></div>
 
-      <!-- FORM FIELDS -->
+      <!-- FORM -->
       <form id="checkin-form" onsubmit="handleSubmit(event)">
         <div id="form-fields">
-          <!-- Phone -->
+
+          <!-- PHONE -->
           <div class="row">
             <label class="label" for="phone">📱 Phone Number *</label>
             <input id="phone" class="input" inputmode="numeric" autocomplete="tel"
@@ -167,31 +99,9 @@
             <div class="hint">We’ll use this to find your profile and reward progress.</div>
           </div>
 
-          <!-- Profile (kept visible to avoid extra round-trips; optional fields except birthday for new guests) -->
-          <div class="row grid-2">
-            <div>
-              <label class="label" for="fullName">👤 Full Name</label>
-              <input id="fullName" class="input" placeholder="Jane Doe" autocomplete="name" />
-            </div>
-            <div>
-              <label class="label" for="email">✉️ Email (Optional)</label>
-              <input id="email" class="input" type="email" placeholder="jane@example.com" autocomplete="email" />
-            </div>
-          </div>
-
-          <div class="row grid-2">
-            <div>
-              <label class="label" for="birthday">🎂 Birthday</label>
-              <input id="birthday" class="input" type="date" />
-              <div class="hint">You’ll get a birthday reward 🎉</div>
-            </div>
-            <div></div>
-          </div>
-
-          <!-- Services -->
+          <!-- SERVICES (always visible) -->
           <div class="row">
             <div class="label">What services are you here for today?</div>
-
             <div class="grid-3">
               <label class="svc"><input type="checkbox" value="Hair"       class="svc-chk" /> 💇‍♀️ Hair</label>
               <label class="svc"><input type="checkbox" value="Makeup"     class="svc-chk" /> 💄 Makeup</label>
@@ -202,15 +112,38 @@
             </div>
           </div>
 
-          <!-- SMS opt-in at the bottom -->
-          <div class="row">
-            <label class="svc" style="gap:12px;">
-              <input id="smsOptin" type="checkbox" />
+          <!-- EXTRA FIELDS (hidden until phone not found) -->
+          <div id="extra-fields" class="hidden">
+            <div class="row grid-2">
               <div>
-                📲 Send me exclusive offers &amp; rewards via SMS
-                <div class="hint">We’ll only text about rewards and salon offers.</div>
+                <label class="label" for="fullName">👤 Full Name *</label>
+                <input id="fullName" class="input" placeholder="Jane Doe" autocomplete="name" />
               </div>
-            </label>
+              <div>
+                <label class="label" for="email">✉️ Email (Optional)</label>
+                <input id="email" class="input" type="email" placeholder="jane@example.com" autocomplete="email" />
+              </div>
+            </div>
+
+            <div class="row grid-2">
+              <div>
+                <label class="label" for="birthday">🎂 Birthday *</label>
+                <input id="birthday" class="input" type="date" />
+                <div class="hint">You’ll get a birthday reward 🎉</div>
+              </div>
+              <div></div>
+            </div>
+
+            <!-- SMS opt-in (only shown when new profile required) -->
+            <div class="row">
+              <label class="svc" style="gap:12px;">
+                <input id="smsOptin" type="checkbox" />
+                <div>
+                  📲 Send me exclusive offers &amp; rewards via SMS
+                  <div class="hint">We’ll only text about rewards and salon offers.</div>
+                </div>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -260,14 +193,12 @@
     }
 
     function genId() {
-      // simple unique submission id for idempotency
       return 'sub_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
     }
 
     function unformatPhone(str) {
       return (str || '').replace(/\D/g, '').slice(0, 10);
     }
-
     function formatPhone(digits) {
       const s = (digits || '').replace(/\D/g, '').slice(0, 10);
       const a = s.slice(0, 3);
@@ -277,14 +208,12 @@
       if (s.length <= 6) return `(${a}) ${b}`;
       return `(${a}) ${b}-${c}`;
     }
-
-    // Smooth phone typing: format on input, keep caret at end
+    // Smooth phone typing
     (function attachPhoneMask() {
       const el = $('phone');
       el.addEventListener('input', () => {
         const digits = unformatPhone(el.value);
         el.value = formatPhone(digits);
-        // keep cursor at end to avoid overwrite quirks
         const len = el.value.length;
         try { el.setSelectionRange(len, len); } catch (e) {}
       });
@@ -309,17 +238,18 @@
       const rawPhone = $('phone').value;
       const phoneDigits = unformatPhone(rawPhone);
 
-      const payload = {
+      // Only include profile fields if extra-fields are visible (i.e., new guest flow)
+      const isExtraVisible = !$('extra-fields').classList.contains('hidden');
+
+      return {
         submissionId: genId(),
         phone: phoneDigits,
         services: getSelectedServices(),
-        name: $('fullName').value.trim() || undefined,
-        email: $('email').value.trim() || undefined,
-        birthday: $('birthday').value || undefined, // 'YYYY-MM-DD'
-        smsOptin: $('smsOptin').checked === true
+        name: isExtraVisible ? ($('fullName').value.trim() || undefined) : undefined,
+        email: isExtraVisible ? ($('email').value.trim() || undefined) : undefined,
+        birthday: isExtraVisible ? ($('birthday').value || undefined) : undefined, // 'YYYY-MM-DD'
+        smsOptin: isExtraVisible ? ($('smsOptin').checked === true) : undefined
       };
-
-      return payload;
     }
 
     async function submitCheckin(payload) {
@@ -328,7 +258,6 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-
       if (!resp.ok) {
         const text = await resp.text().catch(() => '');
         throw new Error(text || `Request failed: ${resp.status}`);
@@ -337,33 +266,27 @@
     }
 
     function showResultCard(data, guestName) {
-      // Hide form elements
       $('form-fields')?.classList.add('hidden');
       $('checkin-btn')?.classList.add('hidden');
 
-      // Compute visits left (fallback if not provided by server)
       const total = Number(data?.totalVisits || 0);
       const left = (typeof data?.visitsLeft === 'number')
         ? data.visitsLeft
         : visitsLeft(total, 5);
 
-      // Title
       const title = data?.message || `Thanks for checking in${guestName ? `, ${guestName}` : ''}!`;
       $('result-title').textContent = title;
 
-      // Subtitle
       const sub = data?.hasReward
         ? `🎉 You unlocked a reward today: Free Eyebrows!`
         : `${left} visit${left === 1 ? '' : 's'} left before your next reward (Free Eyebrows).`;
       $('result-sub').textContent = sub;
 
-      // Services
       const servicesText = Array.isArray(data?.services) && data.services.length
         ? data.services.join(', ')
         : '—';
       $('result-services').textContent = servicesText;
 
-      // Reward row
       if (data?.hasReward && data?.reward) {
         $('result-reward').classList.remove('hidden');
         $('result-reward-text').textContent =
@@ -375,22 +298,22 @@
       $('result-cashier-note').textContent =
         data?.cashierNote || 'Show reward code at checkout if present.';
 
-      // Reveal result card
       $('result-card').classList.remove('hidden');
     }
 
+    function revealExtraFields() {
+      $('extra-fields').classList.remove('hidden');
+      setTimeout(() => $('fullName').focus(), 50);
+    }
+
     function resetForNextGuest() {
-      // Clear inputs
       $('checkin-form').reset();
       $('phone').value = '';
       setBanner('');
-
-      // Show form again
+      $('extra-fields').classList.add('hidden');
       $('form-fields')?.classList.remove('hidden');
       $('checkin-btn')?.classList.remove('hidden');
       $('result-card')?.classList.add('hidden');
-
-      // Uncheck services explicitly
       document.querySelectorAll('.svc-chk').forEach(chk => chk.checked = false);
     }
 
@@ -418,14 +341,12 @@
           const guestName = $('fullName').value.trim();
           setBanner(`Thanks for checking in${guestName ? `, ${guestName}` : ''}!`, 'ok');
           showResultCard(data, guestName);
+        } else if (data?.needsProfile) {
+          // New customer flow: reveal name/birthday/email/sms, keep services
+          revealExtraFields();
+          setBanner(data?.message || 'We couldn’t verify your phone — please add your name and birthday, then tap Check In again.', 'ok');
         } else {
-          // If backend ever returns a “needsProfile” flag, reveal fields & message
-          if (data?.needsProfile) {
-            setBanner('We couldn’t verify your phone — please add your name and birthday, then tap Check In again.', 'ok');
-            $('fullName').focus();
-          } else {
-            setBanner('Something went wrong. Please try again.', 'error');
-          }
+          setBanner('Something went wrong. Please try again.', 'error');
         }
       } catch (err) {
         console.error(err);
