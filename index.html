@@ -2,279 +2,437 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Salon Check-In</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <title>Welcome to Our Salon • Quick Check-In</title>
   <style>
-    :root{
-      --bg:#f5f6fb; --card:#fff; --brand1:#6c63ff; --brand2:#7c49ff;
-      --text:#222; --muted:#666; --ok:#0a7c2f; --warn:#b85c00; --err:#b00020;
+    :root {
+      --bg1: #6440ff;
+      --bg2: #a855f7;
+      --ink: #121826;
+      --muted: #718096;
+      --card: #ffffff;
+      --brand: #6d28d9;
+      --brand-2: #7c3aed;
+      --ok: #16a34a;
+      --warn: #b45309;
+      --error: #dc2626;
+      --border: #e5e7eb;
+      --soft: #f8fafc;
     }
-    html,body{height:100%}
-    body{
-      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      background: radial-gradient(1200px 600px at 15% -10%, #9fa8ff 0, #7b83ff 30%, #6c63ff 55%, #544eff 70%, #3f3cff 100%) no-repeat;
-      color:var(--text);
+    html, body {
+      height: 100%;
     }
-    .wrap{display:grid;place-items:center;min-height:100%;padding:32px 16px}
-    .card{
-      width:100%;max-width:640px;background:#fff;border-radius:16px;
-      box-shadow:0 20px 35px rgba(35,40,105,.25);padding:28px
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+        Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--ink);
+      background: radial-gradient(1200px 1200px at 10% -10%, var(--bg1), transparent 55%),
+                  radial-gradient(900px 900px at 110% 10%, var(--bg2), transparent 50%),
+                  #f3f4f6;
     }
-    h1{margin:0 0 6px;font-size:32px}
-    .sub{color:var(--muted);margin:0 0 18px;font-size:14px}
-    .form-group{margin:14px 0 12px}
-    label{display:block;font-weight:600;margin-bottom:6px}
-    input[type="text"],input[type="tel"],input[type="email"],input[type="date"]{
-      width:100%;padding:14px 16px;border-radius:12px;border:1px solid #d8daf3;background:#fdfdff;font-size:16px;outline:none
+    .wrap {
+      max-width: 760px;
+      margin: 40px auto;
+      padding: 0 16px;
     }
-    input:focus{border-color:#b1b6ff;box-shadow:0 0 0 3px rgba(108,99,255,.12)}
-    .services{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-    .svc{display:flex;align-items:center;gap:10px;border:1px solid #e2e5ff;border-radius:12px;padding:12px 14px;background:#fff;user-select:none}
-    .btn{
-      display:block;width:100%;margin-top:14px;background:linear-gradient(90deg,var(--brand1),var(--brand2));
-      color:#fff;border:0;border-radius:12px;padding:14px 18px;font-size:18px;font-weight:700;cursor:pointer;
-      box-shadow:0 8px 18px rgba(108,99,255,.35)
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(17, 24, 39, .08);
+      padding: 28px;
     }
-    .message{margin:12px 0 0;padding:10px 12px;border-radius:10px;font-size:14px;display:none}
-    .message.info{display:block;background:#eef0ff;color:#2f36a3}
-    .message.ok{display:block;background:#eaf6ee;color:#0a7c2f}
-    .message.err{display:block;background:#fcecef;color:#b00020}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .hide{display:none !important}
-    .optin-row{display:flex;align-items:center;gap:10px;margin-top:12px;color:#555}
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 34px;
+      line-height: 1.2;
+    }
+    .sub {
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-size: 15px;
+    }
+    .row { margin: 14px 0; }
+    .label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .input, .select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      outline: none;
+      font-size: 16px;
+      box-sizing: border-box;
+      background: #fff;
+    }
+    .input:focus, .select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.14);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .svc {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      user-select: none;
+      cursor: pointer;
+    }
+    .svc input {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      accent-color: var(--brand);
+    }
+    .muted { color: var(--muted); }
+    .banner {
+      display: none;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin: 12px 0 14px 0;
+      font-size: 15px;
+      border: 1px solid transparent;
+    }
+    .banner.ok { display: block; background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+    .banner.error { display: block; background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+    .btn-primary {
+      width: 100%;
+      appearance: none;
+      border: 0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(124, 58, 237, .35);
+      transition: transform .04s ease, filter .2s ease;
+    }
+    .btn-primary:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .btn-primary:hover { filter: brightness(1.02); }
+    .hint { font-size: 13px; color: var(--muted); margin-top: 6px; }
+    .flex-row { display: flex; align-items: center; gap: 10px; }
+    .hidden { display: none !important; }
+
+    /* Result card */
+    .result-box {
+      margin-top: 10px;
+      background: var(--soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <h1>✨ Welcome to Our Salon</h1>
-      <p class="sub">Quick &amp; Easy Check-in</p>
+      <div class="sub">Quick &amp; Easy Check-in</div>
 
-      <div id="message" class="message"></div>
+      <!-- status banner -->
+      <div id="banner" class="banner"></div>
 
-      <form id="checkinForm" novalidate>
-        <div class="form-group">
-          <label for="phone">📱 Phone Number *</label>
-          <input type="tel" id="phone" inputmode="numeric" autocomplete="tel" placeholder="(555) 123-4567" required />
-        </div>
-
-        <!-- Shown only when number is NEW -->
-        <div id="additionalFields" class="hide">
-          <div class="form-group">
-            <label for="name">👤 Full Name *</label>
-            <input type="text" id="name" placeholder="Jane Doe" />
-          </div>
-
+      <!-- FORM FIELDS -->
+      <form id="checkin-form" onsubmit="handleSubmit(event)">
+        <div id="form-fields">
+          <!-- Phone -->
           <div class="row">
-            <div class="form-group">
-              <label for="email">📧 Email (Optional)</label>
-              <input type="email" id="email" placeholder="jane@example.com" />
-            </div>
+            <label class="label" for="phone">📱 Phone Number *</label>
+            <input id="phone" class="input" inputmode="numeric" autocomplete="tel"
+                   placeholder="(123) 456-7890" maxlength="18" required />
+            <div class="hint">We’ll use this to find your profile and reward progress.</div>
+          </div>
 
-            <div class="form-group">
-              <label for="birthday">🎂 Birthday *</label>
-              <input type="date" id="birthday" placeholder="YYYY-MM-DD" />
-              <small style="color:#666;display:block;margin-top:6px;">We’ll send you a birthday reward.</small>
+          <!-- Profile (kept visible to avoid extra round-trips; optional fields except birthday for new guests) -->
+          <div class="row grid-2">
+            <div>
+              <label class="label" for="fullName">👤 Full Name</label>
+              <input id="fullName" class="input" placeholder="Jane Doe" autocomplete="name" />
             </div>
+            <div>
+              <label class="label" for="email">✉️ Email (Optional)</label>
+              <input id="email" class="input" type="email" placeholder="jane@example.com" autocomplete="email" />
+            </div>
+          </div>
+
+          <div class="row grid-2">
+            <div>
+              <label class="label" for="birthday">🎂 Birthday</label>
+              <input id="birthday" class="input" type="date" />
+              <div class="hint">You’ll get a birthday reward 🎉</div>
+            </div>
+            <div></div>
+          </div>
+
+          <!-- Services -->
+          <div class="row">
+            <div class="label">What services are you here for today?</div>
+
+            <div class="grid-3">
+              <label class="svc"><input type="checkbox" value="Hair"       class="svc-chk" /> 💇‍♀️ Hair</label>
+              <label class="svc"><input type="checkbox" value="Makeup"     class="svc-chk" /> 💄 Makeup</label>
+              <label class="svc"><input type="checkbox" value="Eyebrows"   class="svc-chk" /> 👁️ Eyebrows</label>
+              <label class="svc"><input type="checkbox" value="Nails"      class="svc-chk" /> 💅 Nails</label>
+              <label class="svc"><input type="checkbox" value="Facial"     class="svc-chk" /> 🧖 Facial</label>
+              <label class="svc"><input type="checkbox" value="Other"      class="svc-chk" /> ✨ Other</label>
+            </div>
+          </div>
+
+          <!-- SMS opt-in at the bottom -->
+          <div class="row">
+            <label class="svc" style="gap:12px;">
+              <input id="smsOptin" type="checkbox" />
+              <div>
+                📲 Send me exclusive offers &amp; rewards via SMS
+                <div class="hint">We’ll only text about rewards and salon offers.</div>
+              </div>
+            </label>
           </div>
         </div>
 
-        <div class="form-group" style="margin-top:16px;">
-          <label>What services are you here for today?</label>
-          <div class="services">
-            <label class="svc"><input type="checkbox" name="services" value="Hair" />💇‍♀️ Hair</label>
-            <label class="svc"><input type="checkbox" name="services" value="Makeup" />💄 Makeup</label>
-            <label class="svc"><input type="checkbox" name="services" value="Eyebrows" />👁️ Eyebrows</label>
-            <label class="svc"><input type="checkbox" name="services" value="Nails" />💅 Nails</label>
-            <label class="svc"><input type="checkbox" name="services" value="Facial" />🧖 Facial</label>
-            <label class="svc"><input type="checkbox" name="services" value="Other" />✨ Other</label>
-          </div>
+        <!-- Submit -->
+        <div class="row">
+          <button id="checkin-btn" class="btn-primary" type="submit">Check In</button>
         </div>
-
-        <!-- SMS opt-in moved to the very bottom; appears only for NEW customers -->
-        <label id="smsRow" class="optin-row hide">
-          <input type="checkbox" id="smsOptin" />
-          <span>📱 Send me exclusive offers &amp; rewards via SMS</span>
-        </label>
-
-        <button id="submitBtn" class="btn" type="submit">Check In</button>
       </form>
+
+      <!-- RESULT CARD (hidden until success) -->
+      <div id="result-card" class="hidden">
+        <div class="result-box">
+          <h3 id="result-title" style="margin: 0 0 6px 0;">Thanks for checking in!</h3>
+          <p id="result-sub" style="margin: 0 0 12px 0;" class="muted"></p>
+
+          <div id="result-details" style="margin-bottom: 10px;">
+            <p><strong>Services today:</strong> <span id="result-services">—</span></p>
+            <p id="result-reward" class="hidden"><strong>🎁 Reward:</strong> <span id="result-reward-text"></span></p>
+            <p><em id="result-cashier-note"></em></p>
+          </div>
+
+          <button id="done-btn" type="button" class="btn-primary" onclick="resetForNextGuest()">
+            Done
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    // === CONFIG: test endpoints ===
-    const LOOKUP_URL  = 'https://princetonai.app.n8n.cloud/webhook-test/ai-lookup';
-    const CHECKIN_URL = 'https://princetonai.app.n8n.cloud/webhook-test/ai-checkin';
+    // -----------------------------
+    // Config
+    // -----------------------------
+    const ENDPOINT = 'https://princetonai.app.n8n.cloud/webhook-test/ai-checkin';
 
-    // === Helpers ===
-    const $ = sel => document.querySelector(sel);
-    function show(el){ el.classList.remove('hide'); }
-    function hide(el){ el.classList.add('hide'); }
-    function onlyDigits(s){ return (s||'').replace(/\D/g,''); }
-    function uuid(){ return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)); }
-    function showMessage(txt,type='info'){ const m=$('#message'); m.className=`message ${type}`; m.textContent=txt; m.style.display='block'; }
+    // -----------------------------
+    // Utilities
+    // -----------------------------
+    const $ = (id) => document.getElementById(id);
 
-    // ===== Phone formatter with caret preservation =====
-    function formatFromDigits(d){
-      if (d.length <= 3) return d;
-      if (d.length <= 6) return `(${d.slice(0,3)}) ${d.slice(3)}`;
-      return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6,10)}`;
-    }
-    function posForDigitIndex(formatted, digitIdx){
-      if (digitIdx <= 0) return 0;
-      let count=0;
-      for (let i=0;i<formatted.length;i++){
-        if (/\d/.test(formatted[i])) count++;
-        if (count === digitIdx) return i+1;
-      }
-      return formatted.length;
+    function setBanner(msg, kind = 'ok') {
+      const el = $('banner');
+      if (!msg) { el.style.display = 'none'; el.className = 'banner'; el.textContent = ''; return; }
+      el.textContent = msg;
+      el.className = 'banner ' + (kind === 'error' ? 'error' : 'ok');
+      el.style.display = 'block';
     }
 
-    const phoneInput = $('#phone');
-    let prevVal = '';
-    let prevCaret = 0;
+    function genId() {
+      // simple unique submission id for idempotency
+      return 'sub_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    }
 
-    phoneInput.addEventListener('keydown', () => {
-      prevVal = phoneInput.value;
-      prevCaret = phoneInput.selectionStart || 0;
-    });
+    function unformatPhone(str) {
+      return (str || '').replace(/\D/g, '').slice(0, 10);
+    }
 
-    phoneInput.addEventListener('input', () => {
-      const digitsLeft = onlyDigits(prevVal.slice(0, prevCaret)).length;
-      const allDigits = onlyDigits(phoneInput.value).slice(0,10);
-      const formatted = formatFromDigits(allDigits);
-      const newPos = posForDigitIndex(formatted, digitsLeft + (allDigits.length > onlyDigits(prevVal).length ? 1 : 0));
-      phoneInput.value = formatted;
-      const pos = Math.min(newPos, formatted.length);
-      phoneInput.setSelectionRange(pos, pos);
-      prevVal = formatted;
-      prevCaret = pos;
-    });
-    // ===== end phone formatter =====
+    function formatPhone(digits) {
+      const s = (digits || '').replace(/\D/g, '').slice(0, 10);
+      const a = s.slice(0, 3);
+      const b = s.slice(3, 6);
+      const c = s.slice(6, 10);
+      if (s.length <= 3) return a;
+      if (s.length <= 6) return `(${a}) ${b}`;
+      return `(${a}) ${b}-${c}`;
+    }
 
-    // === Elements & state ===
-    const form = $('#checkinForm');
-    const submitBtn = $('#submitBtn');
-    const addl = $('#additionalFields');
-    const nameInput = $('#name');
-    const emailInput = $('#email');
-    const birthdayInput = $('#birthday');
-    const smsRow = $('#smsRow');
-    const smsOptinInput = $('#smsOptin');
+    // Smooth phone typing: format on input, keep caret at end
+    (function attachPhoneMask() {
+      const el = $('phone');
+      el.addEventListener('input', () => {
+        const digits = unformatPhone(el.value);
+        el.value = formatPhone(digits);
+        // keep cursor at end to avoid overwrite quirks
+        const len = el.value.length;
+        try { el.setSelectionRange(len, len); } catch (e) {}
+      });
+      el.addEventListener('blur', () => {
+        el.value = formatPhone(unformatPhone(el.value));
+      });
+    })();
 
-    let awaitingExtra = false; // two-step when new
+    function getSelectedServices() {
+      return Array.from(document.querySelectorAll('.svc-chk'))
+        .filter(chk => chk.checked)
+        .map(chk => chk.value);
+    }
 
-    // Submit flow
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    function visitsLeft(total, every = 5) {
+      const t = Number(total || 0);
+      const r = t % every;
+      return r === 0 ? every : every - r;
+    }
 
-      const digits = onlyDigits(phoneInput.value);
-      if (digits.length !== 10) {
-        showMessage('Please enter a valid 10-digit phone number.', 'err');
-        phoneInput.focus(); return;
-      }
+    function buildPayloadFromForm() {
+      const rawPhone = $('phone').value;
+      const phoneDigits = unformatPhone(rawPhone);
 
-      const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(i=>i.value);
-      if (services.length === 0) {
-        showMessage('Please select at least one service.', 'err'); return;
-      }
-
-      // STEP 1: lookup on first click
-      if (!awaitingExtra) {
-        try {
-          showMessage('Checking your profile…', 'info');
-          const r = await fetch(LOOKUP_URL, {
-            method:'POST', headers:{'Content-Type':'application/json'},
-            body: JSON.stringify({ phone: digits })
-          });
-          if (!r.ok) throw new Error('Lookup failed');
-          const data = await r.json();
-
-          if (data && data.exists) {
-            // Returning customer: submit immediately
-            await submitCheckin({ digits, services });
-            return;
-          } else {
-            // New customer → show fields + SMS opt-in at bottom
-            awaitingExtra = true;
-            submitBtn.textContent = 'Finish Check-In';
-            show(addl);
-            show(smsRow);
-            nameInput.required = true;
-            birthdayInput.required = true;
-            showMessage('We could not verify your phone automatically—please add your name and birthday.', 'info');
-            return;
-          }
-        } catch(err){
-          console.error(err);
-          // Fallback: treat as new
-          awaitingExtra = true;
-          submitBtn.textContent = 'Finish Check-In';
-          show(addl);
-          show(smsRow);
-          nameInput.required = true;
-          birthdayInput.required = true;
-          showMessage('We could not verify your phone automatically—please add your name and birthday.', 'warn');
-          return;
-        }
-      }
-
-      // STEP 2: validate & submit for new customer
-      if (awaitingExtra) {
-        if (!nameInput.value.trim()) { showMessage('Please enter your full name.', 'err'); nameInput.focus(); return; }
-        if (!birthdayInput.value)     { showMessage('Please select your birthday.', 'err'); birthdayInput.focus(); return; }
-        await submitCheckin({
-          digits,
-          services,
-          name: nameInput.value.trim(),
-          email: emailInput.value ? emailInput.value.trim() : null,
-          birthday: birthdayInput.value,
-          smsOptin: !!smsOptinInput.checked
-        });
-      }
-    });
-
-    async function submitCheckin({digits, services, name=null, email=null, birthday=null, smsOptin=false}){
       const payload = {
-        submissionId: uuid(),
-        phone: digits,
-        services,
-        name, email, birthday,
-        smsOptin
+        submissionId: genId(),
+        phone: phoneDigits,
+        services: getSelectedServices(),
+        name: $('fullName').value.trim() || undefined,
+        email: $('email').value.trim() || undefined,
+        birthday: $('birthday').value || undefined, // 'YYYY-MM-DD'
+        smsOptin: $('smsOptin').checked === true
       };
 
-      try{
-        showMessage('Submitting your check-in…', 'info');
-        const res = await fetch(CHECKIN_URL, {
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify(payload)
-        });
+      return payload;
+    }
 
-        // Try JSON; fall back to text
-        let msg = '';
-        let data = null;
-        try { data = await res.json(); } catch { msg = await res.text(); }
-        if (!res.ok) throw new Error(msg || 'Check-in failed');
+    async function submitCheckin(payload) {
+      const resp = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-        let success = 'Thanks for checking in!';
-        if (payload.name) success = `Thanks for checking in, ${payload.name.split(' ')[0]}!`;
-        if (data && data.hasReward && data.reward) {
-          const desc = data.reward.type === 'percent_off' ? `${data.reward.value}% off` : `$${data.reward.value} off`;
-          success += ` 🎉 Reward: ${desc} — Code: ${data.reward.code}`;
+      if (!resp.ok) {
+        const text = await resp.text().catch(() => '');
+        throw new Error(text || `Request failed: ${resp.status}`);
+      }
+      return resp.json();
+    }
+
+    function showResultCard(data, guestName) {
+      // Hide form elements
+      $('form-fields')?.classList.add('hidden');
+      $('checkin-btn')?.classList.add('hidden');
+
+      // Compute visits left (fallback if not provided by server)
+      const total = Number(data?.totalVisits || 0);
+      const left = (typeof data?.visitsLeft === 'number')
+        ? data.visitsLeft
+        : visitsLeft(total, 5);
+
+      // Title
+      const title = data?.message || `Thanks for checking in${guestName ? `, ${guestName}` : ''}!`;
+      $('result-title').textContent = title;
+
+      // Subtitle
+      const sub = data?.hasReward
+        ? `🎉 You unlocked a reward today: Free Eyebrows!`
+        : `${left} visit${left === 1 ? '' : 's'} left before your next reward (Free Eyebrows).`;
+      $('result-sub').textContent = sub;
+
+      // Services
+      const servicesText = Array.isArray(data?.services) && data.services.length
+        ? data.services.join(', ')
+        : '—';
+      $('result-services').textContent = servicesText;
+
+      // Reward row
+      if (data?.hasReward && data?.reward) {
+        $('result-reward').classList.remove('hidden');
+        $('result-reward-text').textContent =
+          data.reward.reason ? data.reward.reason : 'Reward earned';
+      } else {
+        $('result-reward').classList.add('hidden');
+      }
+
+      $('result-cashier-note').textContent =
+        data?.cashierNote || 'Show reward code at checkout if present.';
+
+      // Reveal result card
+      $('result-card').classList.remove('hidden');
+    }
+
+    function resetForNextGuest() {
+      // Clear inputs
+      $('checkin-form').reset();
+      $('phone').value = '';
+      setBanner('');
+
+      // Show form again
+      $('form-fields')?.classList.remove('hidden');
+      $('checkin-btn')?.classList.remove('hidden');
+      $('result-card')?.classList.add('hidden');
+
+      // Uncheck services explicitly
+      document.querySelectorAll('.svc-chk').forEach(chk => chk.checked = false);
+    }
+
+    // -----------------------------
+    // Submit handler
+    // -----------------------------
+    async function handleSubmit(e) {
+      e.preventDefault();
+
+      const btn = $('checkin-btn');
+      btn.disabled = true;
+      const original = btn.textContent;
+      btn.textContent = 'Checking in…';
+
+      try {
+        const payload = buildPayloadFromForm();
+
+        if (!payload.phone || payload.phone.length !== 10) {
+          throw new Error('Please enter a valid 10-digit phone number.');
         }
-        showMessage(success, 'ok');
 
-        // Reset state
-        awaitingExtra = false;
-        submitBtn.textContent = 'Check In';
-        hide(addl); hide(smsRow);
-        nameInput.required = false; birthdayInput.required = false;
-        nameInput.value=''; emailInput.value=''; birthdayInput.value=''; smsOptinInput.checked=false;
-        document.querySelectorAll('input[name="services"]').forEach(i=>i.checked=false);
-      }catch(err){
+        const data = await submitCheckin(payload);
+
+        if (data?.success) {
+          const guestName = $('fullName').value.trim();
+          setBanner(`Thanks for checking in${guestName ? `, ${guestName}` : ''}!`, 'ok');
+          showResultCard(data, guestName);
+        } else {
+          // If backend ever returns a “needsProfile” flag, reveal fields & message
+          if (data?.needsProfile) {
+            setBanner('We couldn’t verify your phone — please add your name and birthday, then tap Check In again.', 'ok');
+            $('fullName').focus();
+          } else {
+            setBanner('Something went wrong. Please try again.', 'error');
+          }
+        }
+      } catch (err) {
         console.error(err);
-        showMessage('Something went wrong while checking you in. Please try again.', 'err');
+        setBanner(err?.message || 'Network or server error. Please try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = original;
       }
     }
   </script>
