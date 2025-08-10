@@ -1,614 +1,278 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salon Check-in</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 450px;
-            width: 100%;
-            padding: 40px;
-            transition: all 0.3s ease;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
-            text-align: center;
-        }
-        
-        .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
-            text-align: center;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 500;
-        }
-        
-        input[type="tel"],
-        input[type="text"],
-        input[type="email"] {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e1e1e1;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .services {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .service-checkbox {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .service-checkbox:hover {
-            border-color: #667eea;
-            background: #f8f8ff;
-        }
-        
-        .service-checkbox.selected {
-            border-color: #667eea;
-            background: #f8f8ff;
-        }
-        
-        .service-checkbox input {
-            margin-right: 8px;
-            cursor: pointer;
-        }
-        
-        .service-checkbox label {
-            margin: 0;
-            cursor: pointer;
-            user-select: none;
-            font-size: 14px;
-        }
-        
-        .sms-optin {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 12px;
-            background: #f8f8ff;
-            border-radius: 10px;
-        }
-        
-        .sms-optin input {
-            margin-right: 10px;
-        }
-        
-        .sms-optin label {
-            margin: 0;
-            font-size: 14px;
-            color: #555;
-        }
-        
-        button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
-        }
-        
-        .loading.active {
-            display: block;
-        }
-        
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .message {
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-            animation: slideIn 0.5s ease;
-        }
-        
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .message.success {
-            background: linear-gradient(135deg, #d4edda, #c3e6cb);
-            color: #155724;
-            border: 1px solid #b1dfbb;
-            display: block;
-        }
-        
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            display: block;
-        }
-        
-        .message.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-            display: block;
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        
-        .visit-count {
-            background: linear-gradient(135deg, #f8f8ff, #e8e8ff);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            margin: 20px 0;
-            font-size: 24px;
-            color: #667eea;
-            font-weight: 700;
-            border: 2px solid #667eea;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.02);
-            }
-        }
-        
-        .reward-badge {
-            background: linear-gradient(135deg, gold, #ffcc00);
-            color: #333;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 15px;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
-            animation: glow 2s ease-in-out infinite;
-        }
-        
-        @keyframes glow {
-            0%, 100% {
-                box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
-            }
-            50% {
-                box-shadow: 0 5px 25px rgba(255, 215, 0, 0.8);
-            }
-        }
-        
-        .progress-bar {
-            background: #e1e1e1;
-            height: 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 15px 0;
-        }
-        
-        .progress-fill {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            transition: width 1s ease;
-        }
-        
-        #additionalFields {
-            animation: slideIn 0.5s ease;
-        }
-        
-        .success-icon {
-            font-size: 60px;
-            margin-bottom: 15px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Salon Check-In</title>
+  <style>
+    :root {
+      --bg: #f5f6fb;
+      --card: #ffffff;
+      --brand1: #6c63ff;
+      --brand2: #7c49ff;
+      --text: #222;
+      --muted: #666;
+      --ok: #0a7c2f;
+      --warn: #b85c00;
+      --err: #b00020;
+      --radius: 16px;
+    }
+    html, body { height:100%; }
+    body {
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 15% -10%, #9fa8ff 0, #7b83ff 30%, #6c63ff 55%, #544eff 70%, #3f3cff 100%) no-repeat,
+                  linear-gradient(#eceefe, #eceefe) no-repeat;
+      background-size: 100% 100%;
+      color: var(--text);
+    }
+    .wrap { display:grid; place-items:center; min-height:100%; padding: 32px 16px; }
+    .card {
+      width: 100%;
+      max-width: 640px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 35px rgba(35,40,105,.25);
+      padding: 28px;
+    }
+    h1 { margin: 0 0 6px; font-size: 32px; }
+    .sub { color:var(--muted); margin:0 0 18px; font-size:14px; }
+    .form-group { margin: 14px 0 12px; }
+    label { display:block; font-weight:600; margin-bottom: 6px; }
+    input[type="text"], input[type="tel"], input[type="email"], input[type="date"] {
+      width:100%; padding:14px 16px; border-radius:12px; border:1px solid #d8daf3; outline:none;
+      font-size:16px; background:#fdfdff;
+    }
+    input:focus { border-color:#b1b6ff; box-shadow: 0 0 0 3px rgba(108,99,255,.12); }
+    .services { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
+    .svc {
+      display:flex; align-items:center; gap:10px; border:1px solid #e2e5ff; border-radius:12px; padding:12px 14px;
+      user-select:none; cursor:pointer; background:#fff;
+    }
+    .svc input { transform: scale(1.15); }
+    .optin { display:flex; align-items:center; gap:10px; margin-top:12px; color:var(--muted) }
+    .btn {
+      display:block; width:100%; margin-top:18px; background: linear-gradient(90deg, var(--brand1), var(--brand2));
+      color:#fff; border:0; border-radius: 12px; padding:14px 18px; font-size:18px; font-weight:700; cursor:pointer;
+      box-shadow: 0 8px 18px rgba(108,99,255,.35);
+    }
+    .message { margin: 12px 0 0; padding: 10px 12px; border-radius:10px; font-size:14px; display:none; }
+    .message.info { display:block; background:#eef0ff; color:#2f36a3; }
+    .message.ok   { display:block; background:#eaf6ee; color:#0a7c2f; }
+    .message.err  { display:block; background:#fcecef; color:#b00020; }
+    .row { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .hide { display:none !important; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>✨ Welcome to Our Salon</h1>
-        <p class="subtitle">Quick & Easy Check-in</p>
-        
-        <div id="message" class="message"></div>
-        
-        <form id="checkinForm">
-            <!-- Phone Number - Always Required -->
-            <div class="form-group">
-                <label for="phone">📱 Phone Number *</label>
-                <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
-            </div>
-            
-            <!-- Additional Fields - Show for new customers -->
-            <div id="additionalFields" class="hidden">
-                <div class="form-group">
-                    <label for="name">👤 Full Name *</label>
-                    <input type="text" id="name" name="name" placeholder="Jane Doe">
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">📧 Email (Optional)</label>
-                    <input type="email" id="email" name="email" placeholder="jane@example.com">
-                </div>
-            </div>
-            
-            <!-- Services Selection -->
-            <div class="form-group">
-                <label>What services are you here for today?</label>
-                <div class="services">
-                    <div class="service-checkbox" data-service="Hair">
-                        <input type="checkbox" id="hair" name="services" value="Hair">
-                        <label for="hair">💇‍♀️ Hair</label>
-                    </div>
-                    <div class="service-checkbox" data-service="Makeup">
-                        <input type="checkbox" id="makeup" name="services" value="Makeup">
-                        <label for="makeup">💄 Makeup</label>
-                    </div>
-                    <div class="service-checkbox" data-service="Eyebrows">
-                        <input type="checkbox" id="eyebrows" name="services" value="Eyebrows">
-                        <label for="eyebrows">👁️ Eyebrows</label>
-                    </div>
-                    <div class="service-checkbox" data-service="Nails">
-                        <input type="checkbox" id="nails" name="services" value="Nails">
-                        <label for="nails">💅 Nails</label>
-                    </div>
-                    <div class="service-checkbox" data-service="Facial">
-                        <input type="checkbox" id="facial" name="services" value="Facial">
-                        <label for="facial">🧖‍♀️ Facial</label>
-                    </div>
-                    <div class="service-checkbox" data-service="Other">
-                        <input type="checkbox" id="other" name="services" value="Other">
-                        <label for="other">✨ Other</label>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- SMS Opt-in -->
-            <div class="sms-optin">
-                <input type="checkbox" id="smsOptin" name="smsOptin">
-                <label for="smsOptin">📱 Send me exclusive offers & rewards via SMS</label>
-            </div>
-            
-            <button type="submit" id="submitBtn">Check In</button>
-        </form>
-        
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Processing your check-in...</p>
+  <div class="wrap">
+    <div class="card">
+      <h1>✨ Welcome to Our Salon</h1>
+      <p class="sub">Quick &amp; Easy Check-in</p>
+
+      <div id="message" class="message"></div>
+
+      <form id="checkinForm" novalidate>
+        <div class="form-group">
+          <label for="phone">📱 Phone Number *</label>
+          <input type="tel" id="phone" inputmode="numeric" autocomplete="tel" placeholder="(555) 123-4567" required />
         </div>
+
+        <!-- Additional fields (shown only for new customers) -->
+        <div id="additionalFields" class="hide">
+          <div class="form-group">
+            <label for="name">👤 Full Name *</label>
+            <input type="text" id="name" placeholder="Jane Doe" />
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="email">📧 Email (Optional)</label>
+              <input type="email" id="email" placeholder="jane@example.com" />
+            </div>
+
+            <div class="form-group">
+              <label for="birthday">🎂 Birthday *</label>
+              <input type="date" id="birthday" placeholder="YYYY-MM-DD" />
+              <small style="color:#666;display:block;margin-top:6px;">We’ll send you a birthday reward.</small>
+            </div>
+          </div>
+
+          <label class="optin">
+            <input type="checkbox" id="smsOptin" />
+            <span>📱 Send me exclusive offers &amp; rewards via SMS</span>
+          </label>
+        </div>
+
+        <div class="form-group" style="margin-top:16px;">
+          <label>What services are you here for today?</label>
+          <div class="services">
+            <label class="svc"><input type="checkbox" name="services" value="Hair" />💇‍♀️ Hair</label>
+            <label class="svc"><input type="checkbox" name="services" value="Makeup" />💄 Makeup</label>
+            <label class="svc"><input type="checkbox" name="services" value="Eyebrows" />👁️ Eyebrows</label>
+            <label class="svc"><input type="checkbox" name="services" value="Nails" />💅 Nails</label>
+            <label class="svc"><input type="checkbox" name="services" value="Facial" />🧖 Facial</label>
+            <label class="svc"><input type="checkbox" name="services" value="Other" />✨ Other</label>
+          </div>
+        </div>
+
+        <button class="btn" type="submit">Check In</button>
+      </form>
     </div>
-    
-    <script>
-        // Configuration - Update this with your n8n webhook URL
-        // For local testing: http://localhost:5678/webhook/ai-salon-checkin-001
-        // For production: https://your-n8n-instance.com/webhook/ai-salon-checkin-001
-        const WEBHOOK_URL = 'https://princetonai.app.n8n.cloud/webhook-test/ai-checkin';
-        const LOOKUP_URL  = 'https://princetonai.app.n8n.cloud/webhook-test/ai-lookup';
-        function uuid(){return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));}
-        
-        // Form elements
-        const form = document.getElementById('checkinForm');
-        const phoneInput = document.getElementById('phone');
-        const additionalFields = document.getElementById('additionalFields');
-        const loading = document.getElementById('loading');
-        const message = document.getElementById('message');
-        const submitBtn = document.getElementById('submitBtn');
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        
-        // Track if we've checked customer status
-        let hasCheckedStatus = false;
-        let isNewCustomer = false;
-        
-        // Service checkbox handling
-        document.querySelectorAll('.service-checkbox').forEach(box => {
-            box.addEventListener('click', function(e) {
-                if (e.target.type !== 'checkbox') {
-                    const checkbox = this.querySelector('input[type="checkbox"]');
-                    checkbox.checked = !checkbox.checked;
-                }
-                this.classList.toggle('selected', this.querySelector('input').checked);
-            });
-            
-            // Initialize selected state
-            const checkbox = box.querySelector('input');
-            if (checkbox.checked) {
-                box.classList.add('selected');
-            }
+  </div>
+
+  <script>
+    // === CONFIG ===
+    const LOOKUP_URL  = 'https://princetonai.app.n8n.cloud/webhook/ai-lookup';   // change if needed
+    const CHECKIN_URL = 'https://princetonai.app.n8n.cloud/webhook/ai-checkin';  // change if needed
+
+    // === Helpers ===
+    const $ = sel => document.querySelector(sel);
+    function show(el) { el.classList.remove('hide'); }
+    function hide(el) { el.classList.add('hide'); }
+    function uuid() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c/4).toString(16)
+      );
+    }
+    function onlyDigits(s){ return (s||'').replace(/\D/g,''); }
+    function formatUSPhone(raw) {
+      const d = onlyDigits(raw).slice(0,10);
+      if (d.length < 4) return d;
+      if (d.length < 7) return `(${d.slice(0,3)}) ${d.slice(3)}`;
+      return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6,10)}`;
+    }
+    function showMessage(text, type='info') {
+      const m = $('#message');
+      m.className = `message ${type}`;
+      m.textContent = text;
+      m.style.display = 'block';
+    }
+
+    // === Elements ===
+    const form = $('#checkinForm');
+    const phoneInput = $('#phone');
+    const addl = $('#additionalFields');
+    const nameInput = $('#name');
+    const emailInput = $('#email');
+    const birthdayInput = $('#birthday');
+    const smsOptinInput = $('#smsOptin');
+
+    // Phone formatter + lookup trigger
+    phoneInput.addEventListener('input', async (e) => {
+      const caret = phoneInput.selectionStart;
+      const prev = phoneInput.value;
+      phoneInput.value = formatUSPhone(phoneInput.value);
+      // Basic caret handling (best effort)
+      if (document.activeElement === phoneInput && prev.length < phoneInput.value.length) {
+        phoneInput.selectionStart = phoneInput.selectionEnd = (caret||phoneInput.value.length)+1;
+      }
+
+      const digits = onlyDigits(phoneInput.value);
+      if (digits.length === 10) {
+        await lookupPhone(digits);
+      } else {
+        // not enough digits → treat as unknown (hide extras)
+        hide(addl);
+        nameInput.required = false;
+        birthdayInput.required = false;
+      }
+    });
+
+    async function lookupPhone(digits) {
+      try {
+        showMessage('Checking your profile…', 'info');
+        const response = await fetch(LOOKUP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone: digits })
         });
-        
-        // Phone formatting
-        phoneInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            let formatted = value;
-            
-            if (value.length >= 6) {
-                formatted = `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)}`;
-            } else if (value.length >= 3) {
-                formatted = `(${value.slice(0,3)}) ${value.slice(3)}`;
-            }
-            
-            e.target.value = formatted;
-            
-            // Check customer status when phone is complete
-            if (value.length === 10 && !hasCheckedStatus) {
-                checkCustomerStatus();
-            } else if (value.length < 10) {
-                hasCheckedStatus = false;
-                additionalFields.classList.add('hidden');
-                nameInput.required = false;
-            }
+        if (!response.ok) throw new Error(`Server error: ${response.status}`);
+        const data = await response.json();
+
+        // Expected: { exists: boolean, customerName?: string }
+        if (data && data.exists) {
+          // Returning customer → hide extra fields
+          hide(addl);
+          nameInput.required = false;
+          birthdayInput.required = false;
+          const nm = data.customerName ? `, ${data.customerName}` : '';
+          showMessage(`Welcome back${nm}! Select your services and check in.`, 'info');
+        } else {
+          // New customer → show extra fields + require name & birthday
+          show(addl);
+          nameInput.required = true;
+          birthdayInput.required = true;
+          showMessage('Welcome! Please fill in your info below.', 'info');
+        }
+      } catch (err) {
+        console.error(err);
+        // If lookup fails, still allow check-in (treat as new)
+        show(addl);
+        nameInput.required = true;
+        birthdayInput.required = true;
+        showMessage('We could not verify your phone automatically—please enter your name and birthday.', 'warn');
+      }
+    }
+
+    // Submit
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const digits = onlyDigits(phoneInput.value);
+      if (digits.length !== 10) {
+        showMessage('Please enter a valid 10-digit phone number.', 'err');
+        phoneInput.focus();
+        return;
+      }
+
+      // Require at least one service
+      const selected = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(i => i.value);
+      if (selected.length === 0) {
+        showMessage('Please select at least one service.', 'err');
+        return;
+      }
+
+      // If extra fields are visible, require name & birthday
+      if (!addl.classList.contains('hide')) {
+        if (!nameInput.value.trim()) {
+          showMessage('Please enter your full name.', 'err');
+          nameInput.focus();
+          return;
+        }
+        if (!birthdayInput.value) {
+          showMessage('Please select your birthday.', 'err');
+          birthdayInput.focus();
+          return;
+        }
+      }
+
+      const payload = {
+        submissionId: uuid(),
+        phone: digits,
+        name: nameInput.value ? nameInput.value.trim() : null,
+        email: emailInput.value ? emailInput.value.trim() : null,
+        birthday: birthdayInput.value || null, // YYYY-MM-DD
+        services: selected,
+        smsOptin: !!smsOptinInput.checked
+      };
+
+      try {
+        showMessage('Submitting your check-in…', 'info');
+        const res = await fetch(CHECKIN_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         });
-        
-        async function checkCustomerStatus() {
-            const phone = phoneInput.value.replace(/\D/g, '');
-            
-            if (phone.length !== 10) return;
-            
-            try {
-                // Quick check to see if customer exists
-                const response = await fetch(LOOKUP_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone })
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    hasCheckedStatus = true;
-                    isNewCustomer = data.isNewCustomer;
-                    
-                    if (isNewCustomer) {
-                        // Show additional fields for new customers
-                        additionalFields.classList.remove('hidden');
-                        nameInput.required = true;
-                        showMessage('Welcome! Please fill in your information below.', 'info');
-                    } else {
-                        // Hide fields for returning customers
-                        additionalFields.classList.add('hidden');
-                        nameInput.required = false;
-                        const name = data.customerName ? `, ${data.customerName}` : '';
-                        showMessage(`Welcome back${name}! Select your services and check in.`, 'info');
-                    }
-                }
-            } catch (error) {
-                console.log('Could not pre-check customer status:', error);
-                // Show fields to be safe
-                additionalFields.classList.remove('hidden');
-                nameInput.required = true;
-            }
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
+        const result = await res.json();
+
+        let success = `Thanks for checking in${payload.name ? ', ' + payload.name.split(' ')[0] : ''}!`;
+        if (result && result.hasReward && result.reward) {
+          const desc = result.reward.type === 'percent_off'
+            ? `${result.reward.value}% off`
+            : `$${result.reward.value} off`;
+          success += ` 🎉 Reward: ${desc} — Code: ${result.reward.code}`;
         }
-        
-        // Form submission
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            // Validate phone
-            const phone = phoneInput.value.replace(/\D/g, '');
-            if (phone.length !== 10) {
-                showMessage('Please enter a valid 10-digit phone number', 'error');
-                return;
-            }
-            
-            // Get selected services
-            const services = [];
-            document.querySelectorAll('input[name="services"]:checked').forEach(cb => {
-                services.push(cb.value);
-            });
-            
-            if (services.length === 0) {
-                showMessage('Please select at least one service', 'error');
-                return;
-            }
-            
-            // Validate name for new customers
-            if (nameInput.required && !nameInput.value.trim()) {
-                showMessage('Please enter your name', 'error');
-                nameInput.focus();
-                return;
-            }
-            
-            // Prepare data
-            const formData = {
-                submissionId: uuid(),
-                phone: phone,
-                name: nameInput.value || null,
-                email: emailInput.value || null,
-                services: services,
-                smsOptin: document.getElementById('smsOptin').checked
-            };
-            
-            // Show loading
-            form.style.display = 'none';
-            loading.classList.add('active');
-            message.className = 'message';
-            
-            try {
-                // Send to n8n webhook
-                const response = await fetch(WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Server error: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                
-                // Hide loading
-                loading.classList.remove('active');
-                
-                if (result.success) {
-                    // Build success message
-                    let successHtml = '<div class="success-icon">✅</div>';
-                    successHtml += '<h2>Check-in Successful!</h2>';
-                    
-                    // Show the message from the backend
-                    successHtml += `<p style="margin: 15px 0; font-size: 18px;">${result.message}</p>`;
-                    
-                    // If not a reward visit, show progress bar
-                    if (!result.hasReward && result.visitsUntilReward) {
-                        const progress = ((5 - result.visitsUntilReward) / 5) * 100;
-                        successHtml += `
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: ${progress}%">
-                                    ${Math.floor(progress)}% to reward
-                                </div>
-                            </div>
-                        `;
-                    }
-                    
-                    // If they earned a reward, show it prominently
-                    if (result.hasReward && result.rewardMessage) {
-                        successHtml += `<div class="reward-badge">
-                            🎉 ${result.rewardMessage}
-                            <br><small>Show this screen at checkout!</small>
-                        </div>`;
-                    }
-                    
-                    // Show services selected
-                    if (result.services && result.services.length > 0) {
-                        successHtml += `<p style=\"margin-top: 15px; color: #666;\">Services: ${result.services.join(', ')}</p>`;
-                    }
-                    
-                    showMessage(successHtml, 'success');
-                    
-                    // Reset form after 7 seconds
-                    setTimeout(() => {
-                        resetForm();
-                    }, 7000);
-                    
-                } else {
-                    throw new Error(result.message || 'Check-in failed');
-                }
-                
-            } catch (error) {
-                loading.classList.remove('active');
-                form.style.display = 'block';
-                showMessage('Error: ' + error.message + '<br>Please try again or ask for assistance.', 'error');
-            }
-        });
-        
-        function showMessage(text, type) {
-            message.innerHTML = text;
-            message.className = `message ${type}`;
-            
-            if (type === 'error') {
-                setTimeout(() => {
-                    message.className = 'message';
-                }, 5000);
-            } else if (type === 'info') {
-                setTimeout(() => {
-                    message.className = 'message';
-                }, 3000);
-            }
-        }
-        
-        function resetForm() {
-            form.reset();
-            form.style.display = 'block';
-            message.className = 'message';
-            additionalFields.classList.add('hidden');
-            nameInput.required = false;
-            hasCheckedStatus = false;
-            isNewCustomer = false;
-            document.querySelectorAll('.service-checkbox').forEach(box => {
-                box.classList.remove('selected');
-            });
-        }
-    </script>
-</body>
-</html>
+        showMessage(success, 'ok');
+
+        // Reset service
