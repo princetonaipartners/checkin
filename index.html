@@ -58,7 +58,8 @@
         
         input[type="tel"],
         input[type="text"],
-        input[type="email"] {
+        input[type="email"],
+        input[type="date"] {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e1e1e1;
@@ -312,9 +313,12 @@
             <div id="additionalFields" class="hidden">
                 <div class="form-group">
                     <label for="name">👤 Full Name *</label>
-                    <input type="text" id="name" name="name" placeholder="Jane Doe">
+                    <input type="text" id="name" name="name" placeholder="Jane Doe" required>
                 </div>
-                
+                <div class="form-group">
+                    <label for="birthday">🎂 Birthday *</label>
+                    <input type="date" id="birthday" name="birthday" required>
+                </div>
                 <div class="form-group">
                     <label for="email">📧 Email (Optional)</label>
                     <input type="email" id="email" name="email" placeholder="jane@example.com">
@@ -371,9 +375,7 @@
         // Configuration - Update this with your n8n webhook URL
         // For local testing: http://localhost:5678/webhook/ai-salon-checkin-001
         // For production: https://your-n8n-instance.com/webhook/ai-salon-checkin-001
-        const WEBHOOK_URL = 'https://princetonai.app.n8n.cloud/webhook-test/ai-checkin';
-        const LOOKUP_URL  = 'https://princetonai.app.n8n.cloud/webhook-test/ai-lookup';
-        function uuid(){return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));}
+        const WEBHOOK_URL = 'http://localhost:5678/webhook/ai-salon-checkin-001';
         
         // Form elements
         const form = document.getElementById('checkinForm');
@@ -383,6 +385,7 @@
         const message = document.getElementById('message');
         const submitBtn = document.getElementById('submitBtn');
         const nameInput = document.getElementById('name');
+        const birthdayInput = document.getElementById('birthday');
         const emailInput = document.getElementById('email');
         
         // Track if we've checked customer status
@@ -412,9 +415,9 @@
             let formatted = value;
             
             if (value.length >= 6) {
-                formatted = `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)}`;
+                formatted = (${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)};
             } else if (value.length >= 3) {
-                formatted = `(${value.slice(0,3)}) ${value.slice(3)}`;
+                formatted = (${value.slice(0,3)}) ${value.slice(3)};
             }
             
             e.target.value = formatted;
@@ -426,6 +429,7 @@
                 hasCheckedStatus = false;
                 additionalFields.classList.add('hidden');
                 nameInput.required = false;
+                birthdayInput.required = false;
             }
         });
         
@@ -436,10 +440,17 @@
             
             try {
                 // Quick check to see if customer exists
-                const response = await fetch(LOOKUP_URL, {
+                const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ phone })
+                    body: JSON.stringify({ 
+                        phone: phone,
+                        services: [],
+                        name: null,
+                        email: null,
+                        birthday: null,
+                        smsOptin: false
+                    })
                 });
                 
                 if (response.ok) {
@@ -451,13 +462,15 @@
                         // Show additional fields for new customers
                         additionalFields.classList.remove('hidden');
                         nameInput.required = true;
+                        birthdayInput.required = true;
                         showMessage('Welcome! Please fill in your information below.', 'info');
                     } else {
                         // Hide fields for returning customers
                         additionalFields.classList.add('hidden');
                         nameInput.required = false;
-                        const name = data.customerName ? `, ${data.customerName}` : '';
-                        showMessage(`Welcome back${name}! Select your services and check in.`, 'info');
+                        birthdayInput.required = false;
+                        const name = data.customerName ? , ${data.customerName} : '';
+                        showMessage(Welcome back${name}! Select your services and check in., 'info');
                     }
                 }
             } catch (error) {
@@ -465,6 +478,7 @@
                 // Show fields to be safe
                 additionalFields.classList.remove('hidden');
                 nameInput.required = true;
+                birthdayInput.required = true;
             }
         }
         
@@ -490,19 +504,24 @@
                 return;
             }
             
-            // Validate name for new customers
+            // Validate name and birthday for new customers
             if (nameInput.required && !nameInput.value.trim()) {
                 showMessage('Please enter your name', 'error');
                 nameInput.focus();
                 return;
             }
+            if (birthdayInput.required && !birthdayInput.value) {
+                showMessage('Please enter your birthday', 'error');
+                birthdayInput.focus();
+                return;
+            }
             
             // Prepare data
             const formData = {
-                submissionId: uuid(),
                 phone: phone,
                 name: nameInput.value || null,
                 email: emailInput.value || null,
+                birthday: birthdayInput.value || null,
                 services: services,
                 smsOptin: document.getElementById('smsOptin').checked
             };
@@ -523,7 +542,7 @@
                 });
                 
                 if (!response.ok) {
-                    throw new Error(`Server error: ${response.status}`);
+                    throw new Error(Server error: ${response.status});
                 }
                 
                 const result = await response.json();
@@ -537,7 +556,7 @@
                     successHtml += '<h2>Check-in Successful!</h2>';
                     
                     // Show the message from the backend
-                    successHtml += `<p style="margin: 15px 0; font-size: 18px;">${result.message}</p>`;
+                    successHtml += <p style="margin: 15px 0; font-size: 18px;">${result.message}</p>;
                     
                     // If not a reward visit, show progress bar
                     if (!result.hasReward && result.visitsUntilReward) {
@@ -545,31 +564,31 @@
                         successHtml += `
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: ${progress}%">
-                                    ${Math.floor(progress)}% to reward
+                                    ${5 - result.visitsUntilReward}/5 visits to reward
                                 </div>
                             </div>
                         `;
                     }
                     
                     // If they earned a reward, show it prominently
-                    if (result.hasReward && result.rewardMessage) {
+                    if (result.hasReward) {
                         successHtml += `<div class="reward-badge">
-                            🎉 ${result.rewardMessage}
+                            🎉 ${result.isBirthday ? 'Free Eyebrow & Upper Lip Service!' : 'Free Eyebrow Service!'}
                             <br><small>Show this screen at checkout!</small>
                         </div>`;
                     }
                     
                     // Show services selected
                     if (result.services && result.services.length > 0) {
-                        successHtml += `<p style=\"margin-top: 15px; color: #666;\">Services: ${result.services.join(', ')}</p>`;
+                        successHtml += <p style="margin-top: 15px; color: #666;">Services: ${result.services.join(', ')}</p>;
                     }
                     
                     showMessage(successHtml, 'success');
                     
-                    // Reset form after 7 seconds
+                    // Reset form after 10 seconds
                     setTimeout(() => {
                         resetForm();
-                    }, 7000);
+                    }, 10000);
                     
                 } else {
                     throw new Error(result.message || 'Check-in failed');
@@ -584,7 +603,7 @@
         
         function showMessage(text, type) {
             message.innerHTML = text;
-            message.className = `message ${type}`;
+            message.className = message ${type};
             
             if (type === 'error') {
                 setTimeout(() => {
@@ -603,6 +622,7 @@
             message.className = 'message';
             additionalFields.classList.add('hidden');
             nameInput.required = false;
+            birthdayInput.required = false;
             hasCheckedStatus = false;
             isNewCustomer = false;
             document.querySelectorAll('.service-checkbox').forEach(box => {
