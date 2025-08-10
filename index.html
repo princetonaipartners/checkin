@@ -2,336 +2,262 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Welcome to Our Salon — Quick Check-in</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
-      --bg: linear-gradient(180deg,#a78bfa 0%, #7c3aed 100%);
-      --card:#ffffff;
-      --muted:#6b7280;
-      --ink:#111827;
-      --ink-2:#374151;
-      --brand:#6d28d9;
-      --brand-2:#7c3aed;
-      --brand-3:#8b5cf6;
-      --success:#e8f6ee;
-      --danger:#fde8e8;
-      --ring: 0 0 0 4px rgba(124,58,237,.15)
+      --bg: #f7f7fb; --card:#ffffff; --ink:#1f2330; --muted:#6b7280;
+      --brand:#6b4df6; --brand-2:#764ef5; --ok:#e7f7ec; --warn:#fff3cd; --err:#fde2e1;
+      --ring:#e6e2ff; --shadow: 0 10px 30px rgba(37, 39, 51, .06);
+      --radius:16px;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    html,body{margin:0;height:100%;background:
+      radial-gradient(60% 120% at 10% 0%, #d6cdff 0, transparent 60%),
+      radial-gradient(60% 120% at 100% 0%, #c7b8ff 0, transparent 60%),
+      var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
       color:var(--ink);
-      background:var(--bg) fixed;
-      min-height:100dvh;
-      display:flex;align-items:flex-start;justify-content:center
     }
-    .shell{
-      width:min(940px,calc(100% - 24px));
-      margin:26px 12px 40px;
-      background:var(--card);
-      border-radius:20px;
-      box-shadow:0 20px 60px rgba(0,0,0,.15);
-      padding:28px 28px 36px
+    .wrap{max-width:840px;margin:36px auto;padding:0 20px;}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;}
+    h1{margin:0 0 8px 0;font-weight:800;letter-spacing:.2px}
+    .sub{color:var(--muted);margin-bottom:16px}
+    .banner{display:none;margin-bottom:16px;padding:12px 14px;border-radius:12px;font-weight:600}
+    .banner.ok{background:var(--ok)}
+    .banner.warn{background:var(--warn)}
+    .banner.err{background:var(--err)}
+    .grid{display:grid;gap:14px}
+    .two{grid-template-columns:1fr 1fr}
+    .field{display:flex;flex-direction:column;gap:6px}
+    label{font-weight:700}
+    input[type="text"], input[type="tel"], input[type="email"], input[type="date"]{
+      padding:14px;border:1px solid #e5e7eb;border-radius:12px;font-size:16px;outline:none;
     }
-    h1{margin:4px 0 6px;font-weight:800;letter-spacing:.3px}
-    .kicker{color:var(--muted);font-weight:600;margin-bottom:14px}
-    .banner{
-      border-radius:10px;padding:12px 14px;margin:10px 0 18px;font-weight:600
+    input:focus{box-shadow:0 0 0 3px var(--ring);border-color:#c7c9ff}
+    .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+    .svc{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #e5e7eb;border-radius:12px}
+    .row{display:flex;align-items:center;gap:10px}
+    .muted{color:var(--muted);font-size:14px}
+    .actions{margin-top:18px}
+    button{
+      width:100%;padding:16px 18px;border:none;border-radius:14px;
+      background:linear-gradient(180deg,var(--brand),var(--brand-2));
+      color:white;font-weight:800;font-size:16px;cursor:pointer;
     }
-    .ok{background:var(--success);color:#065f46}
-    .warn{background:#eef2ff;color:#3730a3}
-    .err{background:var(--danger);color:#7f1d1d}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .control{margin:10px 0}
-    label{display:block;font-size:.92rem;color:var(--ink-2);font-weight:700;margin:0 0 6px}
-    input[type="text"],
-    input[type="tel"],
-    input[type="email"],
-    input[type="date"]{
-      width:100%;padding:14px 13px;border:1px solid #e5e7eb;border-radius:12px;
-      font:inherit;background:#fff;outline:none;transition: box-shadow .15s,border-color .15s
-    }
-    input:focus{border-color:var(--brand-3);box-shadow:var(--ring)}
-    .grid-services{
-      display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0 2px
-    }
-    .svc{
-      display:flex;align-items:center;gap:10px;border:1px solid #e5e7eb;
-      padding:12px 13px;border-radius:12px
-    }
-    .svc input{width:18px;height:18px}
-    .muted{color:var(--muted);font-size:.9rem}
-    .btn{
-      width:100%;margin-top:16px;border:0;border-radius:14px;
-      padding:16px 18px;color:#fff;background:linear-gradient(90deg,var(--brand) 0%,var(--brand-2) 100%);
-      font-weight:800;letter-spacing:.3px;cursor:pointer
-    }
-    .btn:disabled{opacity:.6;cursor:not-allowed}
-    .hidden{display:none}
-    .summary{
-      border-radius:14px;background:#f6f7ff;border:1px solid #eef;
-      padding:16px 16px 18px;margin:6px 0 16px
-    }
-    .summary h3{margin:0 0 6px}
+    button[disabled]{opacity:.6;cursor:not-allowed}
+    /* summary */
+    .summary{display:none}
+    .summary .box{background:#f7f6ff;border:1px solid #ecebff;border-radius:14px;padding:18px}
+    .summary h2{margin:0 0 8px 0}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:#ecebff;margin-right:8px;margin-top:6px}
     .center{text-align:center}
+    @media (max-width:700px){ .two{grid-template-columns:1fr} .svc-grid{grid-template-columns:1fr 1fr} }
   </style>
 </head>
 <body>
-  <main class="shell">
-    <div class="kicker">Quick & Easy Check-in</div>
-    <h1>Welcome to Our Salon</h1>
+  <div class="wrap">
+    <div class="card" id="formCard">
+      <h1>Welcome to Our Salon</h1>
+      <div class="sub">Quick &amp; Easy Check-in</div>
+      <div class="banner ok" id="okBanner"></div>
+      <div class="banner warn" id="warnBanner"></div>
+      <div class="banner err" id="errBanner"></div>
 
-    <div id="alert" class="banner hidden"></div>
+      <form id="theForm" novalidate>
+        <div class="field">
+          <label for="phone">📞 Phone Number *</label>
+          <input id="phone" type="tel" inputmode="tel" placeholder="(123) 456-7890" required />
+          <div class="muted">We'll use this to find your profile and reward progress.</div>
+        </div>
 
-    <!-- FORM -->
-    <form id="form" novalidate>
-      <div id="needProfileMsg" class="banner warn hidden">
-        We couldn't verify your profile automatically — please add your <strong>name</strong> and <strong>birthday</strong>.
-      </div>
+        <div id="profile-block" style="display:none; margin-top:14px;">
+          <div class="banner warn" style="display:block">We couldn't verify your profile automatically — please add your <b>name</b> and <b>birthday</b>.</div>
 
-      <div class="control">
-        <label for="phone">📞 Phone Number *</label>
-        <input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(123) 456-7890" maxlength="18" required>
-        <div class="muted">We'll use this to find your profile and reward progress.</div>
-      </div>
-
-      <div id="profileFields" class="hidden">
-        <div class="row">
-          <div class="control">
-            <label for="name">👤 Full Name *</label>
-            <input id="name" type="text" placeholder="Jane Doe">
+          <div class="grid two">
+            <div class="field">
+              <label for="fullName">👤 Full Name *</label>
+              <input id="fullName" type="text" autocomplete="name" placeholder="Jane Doe" />
+            </div>
+            <div class="field">
+              <label for="email">✉️ Email (Optional)</label>
+              <input id="email" type="email" autocomplete="email" placeholder="jane@example.com" />
+            </div>
           </div>
-          <div class="control">
-            <label for="email">✉️ Email (Optional)</label>
-            <input id="email" type="email" placeholder="jane@example.com">
+
+          <div class="grid two" style="margin-top:10px">
+            <div class="field">
+              <label for="birthday">🎂 Birthday *</label>
+              <!-- Accepts native yyyy-mm-dd; our backend also accepts mm/dd/yyyy if you prefer typing -->
+              <input id="birthday" type="date" />
+              <div class="muted">You'll get a birthday reward 🎉</div>
+            </div>
+
+            <div class="field">
+              <label class="row" style="margin-top:28px">
+                <input id="smsOptin" type="checkbox" />
+                <span>Send me exclusive offers &amp; rewards via SMS</span>
+              </label>
+              <div class="muted">We’ll only text about rewards and salon offers.</div>
+            </div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="control">
-            <label for="birthday">🎂 Birthday *</label>
-            <input id="birthday" type="date">
-            <div class="muted">You'll get a birthday reward 🎉</div>
-          </div>
-          <div class="control">
-            <label> </label>
-            <label class="svc" style="padding:14px 12px">
-              <input id="sms" type="checkbox">
-              <span>Send me exclusive offers & rewards via SMS</span>
-            </label>
-            <div class="muted">We’ll only text about rewards and salon offers.</div>
+        <div style="margin-top:14px">
+          <label>What services are you here for today?</label>
+          <div class="svc-grid">
+            <label class="svc"><input type="checkbox" name="svc" value="Hair" /> 💇‍♀️ Hair</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Makeup" /> 💄 Makeup</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Eyebrows" /> 👁️ Eyebrows</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Nails" /> 💅 Nails</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Facial" /> ✨ Facial</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Other" /> 🔸 Other</label>
           </div>
         </div>
-      </div>
 
-      <div class="control">
-        <label>What services are you here for today?</label>
-        <div class="grid-services" id="services">
-          <label class="svc"><input type="checkbox" value="Hair"><span>💇‍♀️ Hair</span></label>
-          <label class="svc"><input type="checkbox" value="Makeup"><span>💄 Makeup</span></label>
-          <label class="svc"><input type="checkbox" value="Eyebrows"><span>👁️ Eyebrows</span></label>
-          <label class="svc"><input type="checkbox" value="Nails"><span>💅 Nails</span></label>
-          <label class="svc"><input type="checkbox" value="Facial"><span>✨ Facial</span></label>
-          <label class="svc"><input type="checkbox" value="Other"><span>✨ Other</span></label>
+        <div class="actions">
+          <button id="saveBtn" type="submit">Save &amp; Check In</button>
         </div>
+      </form>
+    </div>
+
+    <!-- summary -->
+    <div class="card summary" id="summaryCard">
+      <div class="banner ok" style="display:block" id="summaryMsg">Thanks for checking in!</div>
+      <div class="box" id="summaryBox">
+        <h2 id="visitsLeftText">Your reward progress</h2>
+        <div class="muted" id="servicesToday"></div>
+        <div id="rewardLine" class="muted" style="margin-top:8px"></div>
       </div>
-
-      <button id="submitBtn" class="btn" type="submit">Check In</button>
-    </form>
-
-    <!-- SUMMARY -->
-    <section id="done" class="hidden">
-      <div id="doneBanner" class="banner ok">Thanks for checking in!</div>
-
-      <div class="summary">
-        <h3 id="doneTitle">Thanks for checking in!</h3>
-        <div id="visitsLeft" class="muted" style="margin:6px 0 10px"></div>
-        <div><strong>Services today:</strong> <span id="svcList">—</span></div>
-        <p class="muted" id="cashierNote" style="margin:12px 0 2px">Show reward code at checkout if present.</p>
+      <div class="actions" style="margin-top:18px">
+        <button type="button" onclick="window.location.reload()">Done</button>
       </div>
-
-      <button class="btn" type="button" onclick="location.reload()">Done</button>
-    </section>
-  </main>
+    </div>
+  </div>
 
   <script>
+    // ==== CONFIG ====
     const WEBHOOK = 'https://princetonai.app.n8n.cloud/webhook/ai-checkin';
 
-    // Elements
-    const form = document.getElementById('form');
-    const submitBtn = document.getElementById('submitBtn');
-    const alertBox = document.getElementById('alert');
-    const needProfileMsg = document.getElementById('needProfileMsg');
-    const profileFields = document.getElementById('profileFields');
+    // ==== STATE ====
+    let submissionId = null; // set after round-1
+    const $ = (sel) => document.querySelector(sel);
 
-    const phoneEl = document.getElementById('phone');
-    const nameEl = document.getElementById('name');
-    const emailEl = document.getElementById('email');
-    const birthdayEl = document.getElementById('birthday');
-    const smsEl = document.getElementById('sms');
-    const servicesBox = document.getElementById('services');
-
-    const doneCard = document.getElementById('done');
-    const doneTitle = document.getElementById('doneTitle');
-    const doneBanner = document.getElementById('doneBanner');
-    const visitsLeftEl = document.getElementById('visitsLeft');
-    const svcListEl = document.getElementById('svcList');
-    const cashierNoteEl = document.getElementById('cashierNote');
-
-    // State
-    let stage = 'lookup'; // 'lookup' -> 'profile' -> 'done'
-    let submissionId = null;
-
-    // Phone helpers: keep raw digits while typing, format on blur
-    const digitsOnly = s => (s || '').replace(/\D/g,'');
-    const fmtPhone = d => {
-      d = digitsOnly(d).slice(0,10);
-      if (!d) return '';
-      if (d.length <= 3) return `(${d}`;
-      if (d.length <= 6) return `(${d.slice(0,3)}) ${d.slice(3)}`;
-      return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6)}`;
-    };
-    phoneEl.addEventListener('focus', () => { phoneEl.value = digitsOnly(phoneEl.value); });
-    phoneEl.addEventListener('blur',  () => { phoneEl.value = fmtPhone(phoneEl.value); });
-
-    function setBanner(kind, msg) {
-      alertBox.className = `banner ${kind ? kind : 'hidden'}`;
-      alertBox.textContent = msg || '';
-      if (!kind) alertBox.classList.add('hidden');
+    // helpers
+    function clearBanners() {
+      $('#okBanner').style.display = 'none';
+      $('#warnBanner').style.display = 'none';
+      $('#errBanner').style.display = 'none';
     }
-
-    function showProfileStep() {
-      stage = 'profile';
-      profileFields.classList.remove('hidden');
-      needProfileMsg.classList.remove('hidden');
-      submitBtn.textContent = 'Save & Check In';
-      // lock the phone to avoid changing idempotency
-      phoneEl.readOnly = true;
-      phoneEl.style.background = '#f9fafb';
-      nameEl.required = true;
-      birthdayEl.required = true;
+    function showWarn(msg){ const el=$('#warnBanner'); el.textContent=msg; el.style.display='block'; }
+    function showErr(msg){ const el=$('#errBanner'); el.textContent=msg; el.style.display='block'; }
+    function digits10(v){
+      const d = String(v||'').replace(/\D/g,'');
+      return d.length >= 10 ? d.slice(-10) : null;
     }
-
-    function showDone(payload) {
-      stage = 'done';
-      form.classList.add('hidden');
-      doneCard.classList.remove('hidden');
-
-      doneBanner.textContent = payload?.message || 'Thanks for checking in!';
-      doneTitle.textContent = payload?.message || 'Thanks for checking in!';
-
-      const list = Array.isArray(payload?.services) ? payload.services : [];
-      svcListEl.textContent = list.length ? list.join(', ') : '—';
-
-      // Visits left: from payload if present; otherwise compute from totalVisits (reward every 5th)
-      let left = payload?.visitsRemaining;
-      if (left == null && typeof payload?.totalVisits === 'number') {
-        left = (5 - (payload.totalVisits % 5)) % 5;
-      }
-      if (left == null) visitsLeftEl.textContent = '';
-      else {
-        const rewardLabel = payload?.reward?.label || 'Free Eyebrows';
-        const isPlural = left !== 1;
-        visitsLeftEl.textContent = `${left} visit${isPlural ? 's' : ''} left before your next reward (${rewardLabel}).`;
-      }
-
-      cashierNoteEl.textContent = payload?.cashierNote || 'Show reward code at checkout if present.';
+    function selectedServices(){
+      return Array.from(document.querySelectorAll('input[name="svc"]:checked'))
+        .map(x=>x.value);
     }
-
-    function getSelectedServices() {
-      return Array.from(servicesBox.querySelectorAll('input[type="checkbox"]'))
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
-    }
-
-    async function postJson(body) {
-      const res = await fetch(WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    async function post(url, body){
+      const res = await fetch(url, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        mode:'cors',
         body: JSON.stringify(body)
       });
-      // n8n always answers JSON on these routes
-      const data = await res.json();
-      if (!res.ok) {
-        const msg = (data && (data.message || data.errorMessage)) || `HTTP ${res.status}`;
-        throw new Error(msg);
-      }
-      return data;
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
     }
 
-    form.addEventListener('submit', async (e) => {
+    function visitsLeftUntil5(totalVisits){
+      // Every 5th visit is a reward; how many left after THIS visit?
+      if (!Number.isFinite(totalVisits)) return null;
+      const mod = totalVisits % 5;
+      return mod === 0 ? 5 : (5 - mod);
+    }
+
+    function renderSummary(r){
+      // hide form, show summary
+      $('#formCard').style.display = 'none';
+      $('#summaryCard').style.display = 'block';
+
+      // message
+      $('#summaryMsg').textContent = r.message || 'Thanks for checking in!';
+
+      // services
+      const svc = Array.isArray(r.services) ? r.services : [];
+      $('#servicesToday').innerHTML = `<b>Services today:</b> ${
+        svc.length ? svc.join(', ') : '—'
+      }`;
+
+      // visits left until next reward
+      const left = visitsLeftUntil5(Number(r.totalVisits));
+      const rewardLabel = 'Free Eyebrows';
+      $('#visitsLeftText').textContent =
+        (left != null)
+          ? `${left} visit${left===1?'':'s'} left before your next reward (${rewardLabel}).`
+          : 'Reward progress updated.';
+
+      // reward line if you actually earned one
+      const rewardLine = $('#rewardLine');
+      if (r.hasReward && r.reward) {
+        rewardLine.textContent = `🎉 Reward unlocked: ${r.reward.service || 'Reward'} — show the code at checkout if present.`;
+      } else {
+        rewardLine.textContent = 'Show reward code at checkout if present.';
+      }
+    }
+
+    // Round-1 then Round-2 submit
+    $('#theForm').addEventListener('submit', async (e)=>{
       e.preventDefault();
-      setBanner(null);
-
-      // basic gather
-      const rawPhone = digitsOnly(phoneEl.value);
-      const services = getSelectedServices();
-
-      if (!rawPhone || rawPhone.length < 10) {
-        setBanner('err','Please enter a valid 10-digit phone number.');
-        phoneEl.focus();
-        return;
-      }
-      if (!services.length) {
-        setBanner('err','Please pick at least one service.');
-        return;
-      }
-
-      // create or reuse submissionId for idempotency
-      submissionId ||= (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
-
-      // body for both phases
-      const body = {
-        submissionId,
-        phone: rawPhone,
-        services
-      };
-
-      if (stage === 'profile') {
-        body.name = (nameEl.value || '').trim();
-        body.email = (emailEl.value || '').trim();
-        body.birthday = birthdayEl.value || ''; // ISO (yyyy-mm-dd)
-        body.smsOptin = !!smsEl.checked;
-
-        if (!body.name || !body.birthday) {
-          setBanner('err','Please fill in your name and birthday.');
-          return;
-        }
-      }
+      clearBanners();
+      const btn = $('#saveBtn');
+      btn.disabled = true;
 
       try {
-        submitBtn.disabled = true;
+        // Gather common bits
+        const phone = digits10($('#phone').value);
+        const services = selectedServices();
 
-        const resp = await postJson(body);
-
-        // If backend wants profile first:
-        if (resp && resp.askProfile) {
-          // Keep the same submissionId if backend returns it (or we already had one)
-          submissionId = resp.submissionId || submissionId;
-          showProfileStep();
-          setBanner('ok','Please add your name and birthday to finish.');
+        if (!submissionId) {
+          // ROUND 1 — phone + services only
+          if (!phone) { showWarn('Please enter a valid phone number.'); btn.disabled=false; return; }
+          const r1 = await post(WEBHOOK, { phone, services });
+          if (r1 && r1.askProfile) {
+            submissionId = r1.submissionId;
+            // show profile block for round-2
+            $('#profile-block').style.display = 'block';
+            showWarn('Please add your name and birthday to finish.');
+            btn.disabled = false;
+            return;
+          }
+          // (If backend ever responded success directly, you could renderSummary here.)
+          showWarn('Please complete your profile to finish.'); // safety
+          btn.disabled = false;
           return;
         }
 
-        // Otherwise we are done
-        if (resp && (resp.success || resp.ok)) {
-          showDone(resp);
-          return;
+        // ROUND 2 — send everything with submissionId
+        const payload = {
+          submissionId,
+          phone,
+          services,
+          name: $('#fullName').value.trim(),
+          birthday: $('#birthday').value.trim(),
+          email: $('#email').value.trim(),
+          smsOptin: $('#smsOptin').checked,
+        };
+        const r2 = await post(WEBHOOK, payload);
+        if (r2 && r2.success) {
+          renderSummary(r2);
+        } else {
+          showErr('Something went wrong finishing your check-in. Please try again.');
+          btn.disabled = false;
         }
-
-        // Safety fallback
-        showDone({
-          message: 'Thanks for checking in!',
-          services
-        });
-
       } catch (err) {
         console.error(err);
-        setBanner('err', err.message || 'Failed to fetch');
-      } finally {
-        submitBtn.disabled = false;
+        showErr('Network error. Please try again.');
+        btn.disabled = false;
       }
     });
   </script>
