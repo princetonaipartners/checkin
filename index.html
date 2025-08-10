@@ -5,63 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Salon Check-In</title>
   <style>
-    :root {
-      --bg: #f5f6fb;
-      --card: #ffffff;
-      --brand1: #6c63ff;
-      --brand2: #7c49ff;
-      --text: #222;
-      --muted: #666;
-      --ok: #0a7c2f;
-      --warn: #b85c00;
-      --err: #b00020;
-      --radius: 16px;
+    :root{
+      --bg:#f5f6fb; --card:#fff; --brand1:#6c63ff; --brand2:#7c49ff;
+      --text:#222; --muted:#666; --ok:#0a7c2f; --warn:#b85c00; --err:#b00020;
+      --radius:16px;
     }
-    html, body { height:100%; }
-    body {
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 15% -10%, #9fa8ff 0, #7b83ff 30%, #6c63ff 55%, #544eff 70%, #3f3cff 100%) no-repeat,
-                  linear-gradient(#eceefe, #eceefe) no-repeat;
-      background-size: 100% 100%;
-      color: var(--text);
+    html,body{height:100%}
+    body{
+      margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background: radial-gradient(1200px 600px at 15% -10%, #9fa8ff 0, #7b83ff 30%, #6c63ff 55%, #544eff 70%, #3f3cff 100%) no-repeat;
+      color:var(--text);
     }
-    .wrap { display:grid; place-items:center; min-height:100%; padding: 32px 16px; }
-    .card {
-      width: 100%;
-      max-width: 640px;
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: 0 20px 35px rgba(35,40,105,.25);
-      padding: 28px;
+    .wrap{display:grid;place-items:center;min-height:100%;padding:32px 16px}
+    .card{
+      width:100%;max-width:640px;background:var(--card);border-radius:16px;
+      box-shadow:0 20px 35px rgba(35,40,105,.25);padding:28px
     }
-    h1 { margin: 0 0 6px; font-size: 32px; }
-    .sub { color:var(--muted); margin:0 0 18px; font-size:14px; }
-    .form-group { margin: 14px 0 12px; }
-    label { display:block; font-weight:600; margin-bottom: 6px; }
-    input[type="text"], input[type="tel"], input[type="email"], input[type="date"] {
-      width:100%; padding:14px 16px; border-radius:12px; border:1px solid #d8daf3; outline:none;
-      font-size:16px; background:#fdfdff;
+    h1{margin:0 0 6px;font-size:32px}
+    .sub{color:var(--muted);margin:0 0 18px;font-size:14px}
+    .form-group{margin:14px 0 12px}
+    label{display:block;font-weight:600;margin-bottom:6px}
+    input[type="text"],input[type="tel"],input[type="email"],input[type="date"]{
+      width:100%;padding:14px 16px;border-radius:12px;border:1px solid #d8daf3;background:#fdfdff;font-size:16px;outline:none
     }
-    input:focus { border-color:#b1b6ff; box-shadow: 0 0 0 3px rgba(108,99,255,.12); }
-    .services { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
-    .svc {
-      display:flex; align-items:center; gap:10px; border:1px solid #e2e5ff; border-radius:12px; padding:12px 14px;
-      user-select:none; cursor:pointer; background:#fff;
+    input:focus{border-color:#b1b6ff;box-shadow:0 0 0 3px rgba(108,99,255,.12)}
+    .services{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .svc{display:flex;align-items:center;gap:10px;border:1px solid #e2e5ff;border-radius:12px;padding:12px 14px;background:#fff;user-select:none}
+    .optin{display:flex;align-items:center;gap:10px;margin-top:12px;color:var(--muted)}
+    .btn{
+      display:block;width:100%;margin-top:18px;background:linear-gradient(90deg,var(--brand1),var(--brand2));
+      color:#fff;border:0;border-radius:12px;padding:14px 18px;font-size:18px;font-weight:700;cursor:pointer;
+      box-shadow:0 8px 18px rgba(108,99,255,.35)
     }
-    .svc input { transform: scale(1.15); }
-    .optin { display:flex; align-items:center; gap:10px; margin-top:12px; color:var(--muted) }
-    .btn {
-      display:block; width:100%; margin-top:18px; background: linear-gradient(90deg, var(--brand1), var(--brand2));
-      color:#fff; border:0; border-radius: 12px; padding:14px 18px; font-size:18px; font-weight:700; cursor:pointer;
-      box-shadow: 0 8px 18px rgba(108,99,255,.35);
-    }
-    .message { margin: 12px 0 0; padding: 10px 12px; border-radius:10px; font-size:14px; display:none; }
-    .message.info { display:block; background:#eef0ff; color:#2f36a3; }
-    .message.ok   { display:block; background:#eaf6ee; color:#0a7c2f; }
-    .message.err  { display:block; background:#fcecef; color:#b00020; }
-    .row { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    .hide { display:none !important; }
+    .message{margin:12px 0 0;padding:10px 12px;border-radius:10px;font-size:14px;display:none}
+    .message.info{display:block;background:#eef0ff;color:#2f36a3}
+    .message.ok{display:block;background:#eaf6ee;color:#0a7c2f}
+    .message.err{display:block;background:#fcecef;color:#b00020}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .hide{display:none !important}
   </style>
 </head>
 <body>
@@ -78,7 +59,7 @@
           <input type="tel" id="phone" inputmode="numeric" autocomplete="tel" placeholder="(555) 123-4567" required />
         </div>
 
-        <!-- Additional fields (shown only for new customers) -->
+        <!-- Step 2 fields (show only when number is NEW) -->
         <div id="additionalFields" class="hide">
           <div class="form-group">
             <label for="name">👤 Full Name *</label>
@@ -116,163 +97,165 @@
           </div>
         </div>
 
-        <button class="btn" type="submit">Check In</button>
+        <button id="submitBtn" class="btn" type="submit">Check In</button>
       </form>
     </div>
   </div>
 
   <script>
-    // === CONFIG ===
-    const LOOKUP_URL  = 'https://princetonai.app.n8n.cloud/webhook-test/ai-checkin';   // change if needed
-    const CHECKIN_URL = 'https://princetonai.app.n8n.cloud/webhook-test/ai-checkin';  // change if needed
+    // === CONFIG: use test endpoints ===
+    const LOOKUP_URL  = 'https://princetonai.app.n8n.cloud/webhook-test/ai-lookup';
+    const CHECKIN_URL = 'https://princetonai.app.n8n.cloud/webhook-test/ai-checkin';
 
     // === Helpers ===
     const $ = sel => document.querySelector(sel);
-    function show(el) { el.classList.remove('hide'); }
-    function hide(el) { el.classList.add('hide'); }
-    function uuid() {
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>
-        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c/4).toString(16)
-      );
-    }
+    function show(el){ el.classList.remove('hide'); }
+    function hide(el){ el.classList.add('hide'); }
     function onlyDigits(s){ return (s||'').replace(/\D/g,''); }
-    function formatUSPhone(raw) {
+    function formatUSPhone(raw){
       const d = onlyDigits(raw).slice(0,10);
       if (d.length < 4) return d;
       if (d.length < 7) return `(${d.slice(0,3)}) ${d.slice(3)}`;
       return `(${d.slice(0,3)}) ${d.slice(3,6)}-${d.slice(6,10)}`;
     }
-    function showMessage(text, type='info') {
-      const m = $('#message');
-      m.className = `message ${type}`;
-      m.textContent = text;
-      m.style.display = 'block';
-    }
+    function uuid(){ return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)); }
+    function showMessage(txt,type='info'){ const m=$('#message'); m.className=`message ${type}`; m.textContent=txt; m.style.display='block'; }
 
-    // === Elements ===
+    // === Elements & state ===
     const form = $('#checkinForm');
-    const phoneInput = $('#phone');
+    const submitBtn = $('#submitBtn');
     const addl = $('#additionalFields');
+    const phoneInput = $('#phone');
     const nameInput = $('#name');
     const emailInput = $('#email');
     const birthdayInput = $('#birthday');
     const smsOptinInput = $('#smsOptin');
 
-    // Phone formatter + lookup trigger
-    phoneInput.addEventListener('input', async (e) => {
-      const caret = phoneInput.selectionStart;
-      const prev = phoneInput.value;
-      phoneInput.value = formatUSPhone(phoneInput.value);
-      // Basic caret handling (best effort)
-      if (document.activeElement === phoneInput && prev.length < phoneInput.value.length) {
-        phoneInput.selectionStart = phoneInput.selectionEnd = (caret||phoneInput.value.length)+1;
-      }
+    let awaitingExtra = false; // step 2 flag
 
-      const digits = onlyDigits(phoneInput.value);
-      if (digits.length === 10) {
-        await lookupPhone(digits);
-      } else {
-        // not enough digits → treat as unknown (hide extras)
-        hide(addl);
-        nameInput.required = false;
-        birthdayInput.required = false;
-      }
+    // Format phone as user types
+    phoneInput.addEventListener('input', () => {
+      const cur = phoneInput.selectionStart;
+      const val = phoneInput.value;
+      phoneInput.value = formatUSPhone(val);
+      phoneInput.selectionStart = phoneInput.selectionEnd = cur;
     });
 
-    async function lookupPhone(digits) {
-      try {
-        showMessage('Checking your profile…', 'info');
-        const response = await fetch(LOOKUP_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone: digits })
-        });
-        if (!response.ok) throw new Error(`Server error: ${response.status}`);
-        const data = await response.json();
-
-        // Expected: { exists: boolean, customerName?: string }
-        if (data && data.exists) {
-          // Returning customer → hide extra fields
-          hide(addl);
-          nameInput.required = false;
-          birthdayInput.required = false;
-          const nm = data.customerName ? `, ${data.customerName}` : '';
-          showMessage(`Welcome back${nm}! Select your services and check in.`, 'info');
-        } else {
-          // New customer → show extra fields + require name & birthday
-          show(addl);
-          nameInput.required = true;
-          birthdayInput.required = true;
-          showMessage('Welcome! Please fill in your info below.', 'info');
-        }
-      } catch (err) {
-        console.error(err);
-        // If lookup fails, still allow check-in (treat as new)
-        show(addl);
-        nameInput.required = true;
-        birthdayInput.required = true;
-        showMessage('We could not verify your phone automatically—please enter your name and birthday.', 'warn');
-      }
-    }
-
-    // Submit
+    // Submit flow (two-step when new)
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
       const digits = onlyDigits(phoneInput.value);
       if (digits.length !== 10) {
         showMessage('Please enter a valid 10-digit phone number.', 'err');
-        phoneInput.focus();
-        return;
+        phoneInput.focus(); return;
       }
 
-      // Require at least one service
-      const selected = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(i => i.value);
-      if (selected.length === 0) {
+      const services = Array.from(document.querySelectorAll('input[name="services"]:checked')).map(i=>i.value);
+      if (services.length === 0) {
         showMessage('Please select at least one service.', 'err');
         return;
       }
 
-      // If extra fields are visible, require name & birthday
-      if (!addl.classList.contains('hide')) {
-        if (!nameInput.value.trim()) {
-          showMessage('Please enter your full name.', 'err');
-          nameInput.focus();
-          return;
-        }
-        if (!birthdayInput.value) {
-          showMessage('Please select your birthday.', 'err');
-          birthdayInput.focus();
+      // STEP 1: On first click, run lookup
+      if (!awaitingExtra) {
+        try {
+          showMessage('Checking your profile…', 'info');
+          const r = await fetch(LOOKUP_URL, {
+            method:'POST', headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({ phone: digits })
+          });
+          if (!r.ok) throw new Error('Lookup failed');
+          const data = await r.json();
+
+          if (data && data.exists) {
+            // Returning customer → submit check-in immediately
+            await submitCheckin({ digits, services });
+            return;
+          } else {
+            // New customer → reveal extra fields, require name+birthday
+            awaitingExtra = true;
+            submitBtn.textContent = 'Finish Check-In';
+            show(addl);
+            nameInput.required = true;
+            birthdayInput.required = true;
+            showMessage('Welcome! Please add your name and birthday, then tap Finish.', 'info');
+            return; // wait for second submit
+          }
+        } catch(err){
+          console.error(err);
+          // If lookup endpoint is unavailable, fall back to step-2 flow
+          awaitingExtra = true;
+          submitBtn.textContent = 'Finish Check-In';
+          show(addl);
+          nameInput.required = true;
+          birthdayInput.required = true;
+          showMessage('We could not verify your phone automatically—please add your name and birthday.', 'warn');
           return;
         }
       }
 
+      // STEP 2: New customer finalization
+      if (awaitingExtra) {
+        if (!nameInput.value.trim()) {
+          showMessage('Please enter your full name.', 'err'); nameInput.focus(); return;
+        }
+        if (!birthdayInput.value) {
+          showMessage('Please select your birthday.', 'err'); birthdayInput.focus(); return;
+        }
+        await submitCheckin({
+          digits,
+          services,
+          name: nameInput.value.trim(),
+          email: emailInput.value ? emailInput.value.trim() : null,
+          birthday: birthdayInput.value,
+          smsOptin: !!smsOptinInput.checked
+        });
+      }
+    });
+
+    async function submitCheckin({digits, services, name=null, email=null, birthday=null, smsOptin=false}){
       const payload = {
         submissionId: uuid(),
         phone: digits,
-        name: nameInput.value ? nameInput.value.trim() : null,
-        email: emailInput.value ? emailInput.value.trim() : null,
-        birthday: birthdayInput.value || null, // YYYY-MM-DD
-        services: selected,
-        smsOptin: !!smsOptinInput.checked
+        services,
+        name, email, birthday,
+        smsOptin
       };
 
-      try {
+      try{
         showMessage('Submitting your check-in…', 'info');
         const res = await fetch(CHECKIN_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method:'POST', headers:{'Content-Type':'application/json'},
           body: JSON.stringify(payload)
         });
-        if (!res.ok) throw new Error(`Server error: ${res.status}`);
-        const result = await res.json();
 
-        let success = `Thanks for checking in${payload.name ? ', ' + payload.name.split(' ')[0] : ''}!`;
-        if (result && result.hasReward && result.reward) {
-          const desc = result.reward.type === 'percent_off'
-            ? `${result.reward.value}% off`
-            : `$${result.reward.value} off`;
-          success += ` 🎉 Reward: ${desc} — Code: ${result.reward.code}`;
+        // Try JSON; fall back to text
+        let msg = '';
+        let data = null;
+        try { data = await res.json(); } catch { msg = await res.text(); }
+        if (!res.ok) throw new Error(msg || 'Check-in failed');
+
+        let success = 'Thanks for checking in!';
+        if (payload.name) success = `Thanks for checking in, ${payload.name.split(' ')[0]}!`;
+        if (data && data.hasReward && data.reward) {
+          const desc = data.reward.type === 'percent_off' ? `${data.reward.value}% off` : `$${data.reward.value} off`;
+          success += ` 🎉 Reward: ${desc} — Code: ${data.reward.code}`;
         }
         showMessage(success, 'ok');
 
-        // Reset service
+        // Reset step state
+        awaitingExtra = false;
+        submitBtn.textContent = 'Check In';
+        hide(addl);
+        nameInput.required = false; birthdayInput.required = false;
+        nameInput.value=''; emailInput.value=''; birthdayInput.value=''; smsOptinInput.checked=false;
+        document.querySelectorAll('input[name="services"]').forEach(i=>i.checked=false);
+      }catch(err){
+        console.error(err);
+        showMessage('Something went wrong while checking you in. Please try again.', 'err');
+      }
+    }
+  </script>
+</body>
+</html>
