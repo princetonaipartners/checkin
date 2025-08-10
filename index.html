@@ -89,9 +89,7 @@
     .svc input{width:18px;height:18px}
     .muted{color:var(--muted); font-size:14px}
 
-    .row.optin{
-      grid-template-columns: 1fr;
-    }
+    .row.optin{ grid-template-columns: 1fr; }
     .optincard{
       border:1px dashed #e5e7eb;border-radius:12px;padding:14px;
       display:flex;gap:10px;align-items:center;background:#fff;
@@ -118,7 +116,6 @@
 
     .hidden{ display:none !important }
 
-    /* Result Card */
     .result{
       margin-top:14px; padding:18px; border-radius:16px;
       background: linear-gradient(180deg,#fbfbff,#f7f6ff);
@@ -145,7 +142,7 @@
         </div>
         <div class="muted" style="margin-top:6px">We’ll use this to find your profile and reward progress.</div>
 
-        <!-- Extra fields: only shown if needsProfile=true -->
+        <!-- Extra fields: only shown if backend signals we need a profile -->
         <div id="extra-fields" class="hidden">
           <div class="row">
             <div>
@@ -191,23 +188,17 @@
 
       <!-- RESULT -->
       <div id="result-wrap" class="hidden">
-        <div class="result" id="result-card">
-          <!-- filled dynamically -->
-        </div>
+        <div class="result" id="result-card"></div>
         <button class="btn donebtn" id="done-btn">Done</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ───────────────────────────
-    // Config
-    // ───────────────────────────
+    // ─────────────────────────── Config ───────────────────────────
     const ENDPOINT = "https://princetonai.app.n8n.cloud/webhook-test/ai-checkin";
 
-    // ───────────────────────────
-    // Utilities
-    // ───────────────────────────
+    // ─────────────────────────── Utilities ───────────────────────────
     const $ = (id) => document.getElementById(id);
     function setBanner(msg, type = "ok") {
       const el = $("banner");
@@ -232,46 +223,55 @@
       return mod === 0 ? 5 : (5 - mod);
     }
 
-    // Phone mask – caret-safe, appends formatting without eating digits
+    // Phone mask – caret-safe
     const phoneInput = $("phone");
-    phoneInput.addEventListener("input", (e) => {
-      const start = phoneInput.selectionStart;
-      const prev = phoneInput.value;
-      const digits = prev.replace(/\D/g, "").slice(0, 10);
+    phoneInput.addEventListener("input", () => {
+      const digits = phoneInput.value.replace(/\D/g, "").slice(0, 10);
       let out = digits;
-      if (digits.length > 6) {
-        out = `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
-      } else if (digits.length > 3) {
-        out = `(${digits.slice(0,3)}) ${digits.slice(3)}`;
-      } else if (digits.length > 0) {
-        out = `(${digits}`;
-      }
+      if (digits.length > 6) out = `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
+      else if (digits.length > 3) out = `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+      else if (digits.length > 0) out = `(${digits}`;
       phoneInput.value = out;
-      // place caret at end (simple + robust for numeric typing)
-      phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
+      phoneInput.setSelectionRange(out.length, out.length);
     });
 
-    // ───────────────────────────
-    // Submission helpers
-    // ───────────────────────────
+    // Robust profile-needed detection (covers multiple possible flags)
+    function responseWantsProfile(d){
+      if (!d || typeof d !== 'object') return false;
+      const msg = (d.message || "").toLowerCase();
+      const flags = [
+        d.needsProfile, d.requireProfile, d.profileRequired,
+        d.isNewCustomer, d.newCustomer,
+        d.status === 'needs_profile',
+        d.code === 'NEEDS_PROFILE'
+      ];
+      if (flags.some(Boolean)) return true;
+      if (d.success === false && /profile|name|birthday/.test(msg)) return true;
+      return false;
+    }
+
+    // ─────────────────────────── Submit helpers ───────────────────────────
     function buildPayloadFromForm(){
       const rawPhone = $("phone").value;
       const phoneDigits = (rawPhone || "").replace(/\D/g, "").slice(0, 10);
-      const showExtra = !$("extra-fields").classList.contains("hidden");
+      const extraShown = !$("extra-fields").classList.contains("hidden");
       return {
         submissionId: genId(),
         phone: phoneDigits,
         services: getSelectedServices(),
-        name:     showExtra ? ($("fullName").value.trim() || undefined) : undefined,
-        email:    showExtra ? ($("email").value.trim()     || undefined) : undefined,
-        birthday: showExtra ? ($("birthday").value         || undefined) : undefined, // yyyy-mm-dd
-        smsOptin: showExtra ? $("smsOptin").checked === true : undefined
+        // let backend know which phase we're in (optional hint)
+        phase: extraShown ? "final" : "probe",
+        name:     extraShown ? ($("fullName").value.trim() || undefined) : undefined,
+        email:    extraShown ? ($("email").value.trim()     || undefined) : undefined,
+        birthday: extraShown ? ($("birthday").value         || undefined) : undefined,
+        smsOptin: extraShown ? $("smsOptin").checked === true : undefined
       };
     }
 
-    function revealExtraFields(){
+    function revealExtraFields(message){
       $("extra-fields").classList.remove("hidden");
       $("checkin-btn").textContent = "Save & Check In";
+      if (message) setBanner(message, "ok");
       setTimeout(() => $("fullName").focus(), 60);
     }
 
@@ -326,7 +326,6 @@
     }
 
     function resetForNextGuest(){
-      // reset form to initial state
       $("result-wrap").classList.add("hidden");
       $("form").classList.remove("hidden");
       setBanner("");
@@ -344,18 +343,15 @@
       $("phone").focus();
     }
 
-    // ───────────────────────────
-    // Submit handler
-    // ───────────────────────────
+    // ─────────────────────────── Submit handler ───────────────────────────
     $("form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = $("checkin-btn");
-      const original = btn.textContent;
+      const original = "Check In";
 
       try{
         const digits = ($("phone").value || "").replace(/\D/g, "");
         if (digits.length !== 10) { throw new Error("Please enter a valid 10-digit phone number."); }
-
         if (!validateExtraFieldsIfShown()) return;
 
         btn.disabled = true; btn.textContent = "Checking in…";
@@ -363,29 +359,33 @@
         const payload = buildPayloadFromForm();
         const data = await submitCheckin(payload);
 
-        // If backend says we need profile, do that first (never skip)
-        if (data?.needsProfile) {
-          revealExtraFields();
-          setBanner(data?.message || "We couldn’t verify your phone — please add your name and birthday, then tap “Save & Check In”.", "ok");
+        // 🔑 Any of several flags from the backend will trigger the profile step
+        if (responseWantsProfile(data)) {
+          revealExtraFields(data?.message || "We couldn’t verify your phone — please add your name and birthday, then tap “Save & Check In”.");
           btn.disabled = false; btn.textContent = "Save & Check In";
           return;
         }
 
-        // Real success → summary
+        // Otherwise, success → summary
         if (data?.success) {
           const guestName =
             (!$("extra-fields").classList.contains("hidden") ? $("fullName").value.trim() : "") || "";
           setBanner(`Thanks for checking in${guestName ? ", " + guestName : ""}!`, "ok");
           showResultCard(data, guestName);
         } else {
-          setBanner("Something went wrong. Please try again.", "err");
+          // If backend didn’t explicitly say needsProfile but also didn’t succeed:
+          // fall back to prompting profile (better than skipping).
+          if (!$("extra-fields").classList.contains("hidden")) {
+            setBanner(data?.message || "Please complete your profile.", "err");
+          } else {
+            revealExtraFields(data?.message || "We couldn’t verify your phone — please add your name and birthday, then tap “Save & Check In”.");
+          }
         }
 
       } catch(err){
         console.error(err);
         setBanner(err?.message || "Network error. Please try again.", "err");
       } finally {
-        // Keep "Save & Check In" if extra fields are visible
         const visible = !$("extra-fields").classList.contains("hidden");
         btn.disabled = false;
         btn.textContent = visible ? "Save & Check In" : original;
