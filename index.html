@@ -1,289 +1,288 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Welcome to Our Salon — Quick Check-in</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root{
-      --bg:#f7f7fb; --card:#fff; --ink:#1f2330; --muted:#6b7280;
-      --brand:#6b4df6; --brand-2:#764ef5; --ok:#e7f7ec; --warn:#fff3cd; --err:#fde2e1;
-      --ring:#e6e2ff; --shadow:0 10px 30px rgba(37,39,51,.06); --radius:16px;
-    }
-    html,body{margin:0;height:100%;
-      background:radial-gradient(60% 120% at 10% 0%, #d6cdff 0, transparent 60%),
-                 radial-gradient(60% 120% at 100% 0%, #c7b8ff 0, transparent 60%),
-                 var(--bg);
-      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      color:var(--ink);
-    }
-    .wrap{max-width:840px;margin:36px auto;padding:0 20px}
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
-    h1{margin:0 0 8px;font-weight:800;letter-spacing:.2px}
-    .sub{color:var(--muted);margin-bottom:16px}
-    .banner{display:none;margin-bottom:16px;padding:12px 14px;border-radius:12px;font-weight:600}
-    .banner.ok{background:var(--ok)}
-    .banner.warn{background:var(--warn)}
-    .banner.err{background:var(--err)}
-    .grid{display:grid;gap:14px}
-    .two{grid-template-columns:1fr 1fr}
-    .field{display:flex;flex-direction:column;gap:6px}
-    label{font-weight:700}
-    input[type="text"],input[type="tel"],input[type="email"]{
-      padding:14px;border:1px solid #e5e7eb;border-radius:12px;font-size:16px;outline:none
-    }
-    input:focus{box-shadow:0 0 0 3px var(--ring);border-color:#c7c9ff}
-    .hint{color:var(--muted);font-size:14px}
-    .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
-    .svc{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #e5e7eb;border-radius:12px}
-    .row{display:flex;align-items:center;gap:10px}
-    .actions{margin-top:18px}
-    button{width:100%;padding:16px 18px;border:none;border-radius:14px;
-      background:linear-gradient(180deg,var(--brand),var(--brand-2));color:#fff;font-weight:800;font-size:16px;cursor:pointer}
-    button[disabled]{opacity:.6;cursor:not-allowed}
-    .summary{display:none}
-    .summary .box{background:#f7f6ff;border:1px solid #ecebff;border-radius:14px;padding:18px}
-    .summary h2{margin:0 0 8px}
-    .muted2{color:#555}
-    @media (max-width:700px){.two{grid-template-columns:1fr}.svc-grid{grid-template-columns:1fr 1fr}}
-  </style>
+  <meta charset="utf-8" />
+  <title>Welcome to Indian Bridal Beauty Services! Please check-in below to earn rewards!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#f7f7fb; --card:#fff; --ink:#1f2330; --muted:#6b7280;
+      --brand:#6b4df6; --brand-2:#764ef5; --ok:#e7f7ec; --warn:#fff3cd; --err:#fde2e1;
+      --ring:#e6e2ff; --shadow:0 10px 30px rgba(37,39,51,.06); --radius:16px;
+    }
+    html,body{margin:0;height:100%;
+      background:radial-gradient(60% 120% at 10% 0%, #d6cdff 0, transparent 60%),
+                 radial-gradient(60% 120% at 100% 0%, #c7b8ff 0, transparent 60%),
+                 var(--bg);
+      font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      color:var(--ink);
+    }
+    .wrap{max-width:840px;margin:36px auto;padding:0 20px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+    h1{margin:0 0 8px;font-weight:800;letter-spacing:.2px}
+    .sub{color:var(--muted);margin-bottom:16px}
+    .banner{display:none;margin-bottom:16px;padding:12px 14px;border-radius:12px;font-weight:600}
+    .banner.ok{background:var(--ok)}
+    .banner.warn{background:var(--warn)}
+    .banner.err{background:var(--err)}
+    .grid{display:grid;gap:14px}
+    .two{grid-template-columns:1fr 1fr}
+    .field{display:flex;flex-direction:column;gap:6px}
+    label{font-weight:700}
+    input[type="text"],input[type="tel"],input[type="email"]{
+      padding:14px;border:1px solid #e5e7eb;border-radius:12px;font-size:16px;outline:none
+    }
+    input:focus{box-shadow:0 0 0 3px var(--ring);border-color:#c7c9ff}
+    .hint{color:var(--muted);font-size:14px}
+    .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+    .svc{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #e5e7eb;border-radius:12px}
+    .row{display:flex;align-items:center;gap:10px}
+    .actions{margin-top:18px}
+    button{width:100%;padding:16px 18px;border:none;border-radius:14px;
+      background:linear-gradient(180deg,var(--brand),var(--brand-2));color:#fff;font-weight:800;font-size:16px;cursor:pointer}
+    button[disabled]{opacity:.6;cursor:not-allowed}
+    .summary{display:none}
+    .summary .box{background:#f7f6ff;border:1px solid #ecebff;border-radius:14px;padding:18px}
+    .summary h2{margin:0 0 8px}
+    .muted2{color:#555}
+    @media (max-width:700px){.two{grid-template-columns:1fr}.svc-grid{grid-template-columns:1fr 1fr}}
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" id="formCard">
-      <h1>Welcome to Our Salon</h1>
-      <div class="sub">Quick &amp; Easy Check-in</div>
+  <div class="wrap">
+    <div class="card" id="formCard">
+      <h1>Welcome to Our Salon</h1>
+      <div class="sub">Quick &amp; Easy Check-in</div>
 
-      <div class="banner ok" id="okBanner" role="status" aria-live="polite"></div>
-      <div class="banner warn" id="warnBanner" role="status" aria-live="polite"></div>
-      <div class="banner err" id="errBanner" role="alert"></div>
+      <div class="banner ok" id="okBanner" role="status" aria-live="polite"></div>
+      <div class="banner warn" id="warnBanner" role="status" aria-live="polite"></div>
+      <div class="banner err" id="errBanner" role="alert"></div>
 
-      <form id="theForm" novalidate>
-        <div class="field">
-          <label for="phone">📞 Phone Number *</label>
-          <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(123) 456-7890" required />
-          <div class="hint">We’ll use this to find your profile and reward progress.</div>
-        </div>
+      <form id="theForm" novalidate>
+        <div class="field">
+          <label for="phone">📞 Phone Number *</label>
+          <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(123) 456-7890" required />
+          <div class="hint">We’ll use this to find your profile and reward progress.</div>
+        </div>
 
-        <div id="profile-block" style="display:none; margin-top:14px;">
-          <div class="banner warn" style="display:block">
-            We couldn’t verify your profile automatically — please add your <b>name</b> and <b>birthday</b>.
-          </div>
+        <div id="profile-block" style="display:none; margin-top:14px;">
+          <div class="banner warn" style="display:block">
+            We couldn’t verify your profile automatically — please add your <b>name</b> and <b>birthday</b>.
+          </div>
 
-          <div class="grid two">
-            <div class="field">
-              <label for="fullName">👤 Full Name *</label>
-              <input id="fullName" type="text" autocomplete="name" placeholder="Jane Doe" />
-            </div>
-            <div class="field">
-              <label for="email">✉️ Email (Optional)</label>
-              <input id="email" type="email" autocomplete="email" placeholder="jane@example.com" />
-            </div>
-          </div>
+          <div class="grid two">
+            <div class="field">
+              <label for="fullName">👤 Full Name *</label>
+              <input id="fullName" type="text" autocomplete="name" placeholder="Jane Doe" />
+            </div>
+            <div class="field">
+              <label for="email">✉️ Email (Optional)</label>
+              <input id="email" type="email" autocomplete="email" placeholder="jane@example.com" />
+            </div>
+          </div>
 
-          <div class="grid two" style="margin-top:10px">
-            <div class="field">
-              <label for="birthday">🎂 Birthday *</label>
-              <!-- Masked YYYY-MM-DD input with auto-hyphens -->
-              <input id="birthday" type="text" inputmode="numeric" autocomplete="bday"
-                     placeholder="yyyy-mm-dd" maxlength="10" aria-describedby="bdayHint" />
-              <div id="bdayHint" class="hint">Format: <b>YYYY-MM-DD</b>. Hyphens insert automatically.</div>
-            </div>
-            <div class="field">
-              <label class="row" style="margin-top:28px">
-                <input id="smsOptin" type="checkbox" />
-                <span>Send me exclusive offers &amp; rewards via SMS</span>
-              </label>
-              <div class="hint">We’ll only text about rewards and salon offers.</div>
-            </div>
-          </div>
-        </div>
+          <div class="grid two" style="margin-top:10px">
+            <div class="field">
+              <label for="birthday">🎂 Birthday *</label>
+                            <input id="birthday" type="text" inputmode="numeric" autocomplete="bday"
+                     placeholder="yyyy-mm-dd" maxlength="10" aria-describedby="bdayHint" />
+              <div id="bdayHint" class="hint">Format: <b>YYYY-MM-DD</b>. Hyphens insert automatically.</div>
+            </div>
+            <div class="field">
+              <label class="row" style="margin-top:28px">
+                <input id="smsOptin" type="checkbox" />
+                <span>Send me exclusive offers &amp; rewards via SMS</span>
+              </label>
+              <div class="hint">We’ll only text about rewards and salon offers.</div>
+            </div>
+          </div>
+        </div>
 
-        <div style="margin-top:14px">
-          <label>What services are you here for today?</label>
-          <div class="svc-grid" role="group" aria-label="Select today’s services">
-            <label class="svc"><input type="checkbox" name="svc" value="Hair" /> 💇‍♀️ Hair</label>
-            <label class="svc"><input type="checkbox" name="svc" value="Makeup" /> 💄 Makeup</label>
-            <label class="svc"><input type="checkbox" name="svc" value="Eyebrows" /> 👁️ Eyebrows</label>
-            <label class="svc"><input type="checkbox" name="svc" value="Nails" /> 💅 Nails</label>
-            <label class="svc"><input type="checkbox" name="svc" value="Facial" /> ✨ Facial</label>
-            <label class="svc"><input type="checkbox" name="svc" value="Other" /> 🔸 Other</label>
-          </div>
-        </div>
+        <div style="margin-top:14px">
+          <label>What services are you here for today?</label>
+          <div class="svc-grid" role="group" aria-label="Select today’s services">
+            <label class="svc"><input type="checkbox" name="svc" value="Hair" /> 💇‍♀️ Hair</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Makeup" /> 💄 Makeup</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Eyebrows" /> 👁️ Eyebrows</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Nails" /> 💅 Nails</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Facial" /> ✨ Facial</label>
+            <label class="svc"><input type="checkbox" name="svc" value="Other" /> 🔸 Other</label>
+          </div>
+        </div>
 
-        <div class="actions">
-          <button id="saveBtn" type="submit">Save &amp; Check In</button>
-        </div>
-      </form>
-    </div>
+        <div class="actions">
+          <button id="saveBtn" type="submit">Save &amp; Check In</button>
+        </div>
+      </form>
+    </div>
 
-    <div class="card summary" id="summaryCard">
-      <div class="banner ok" style="display:block" id="summaryMsg">Thanks for checking in!</div>
-      <div class="box">
-        <h2 id="visitsLeftText">Reward progress</h2>
-        <div class="muted2" id="servicesToday"></div>
-        <div class="muted2" id="rewardLine" style="margin-top:8px"></div>
-      </div>
-      <div class="actions" style="margin-top:18px"><button type="button" onclick="location.reload()">Done</button></div>
-    </div>
-  </div>
+    <div class="card summary" id="summaryCard">
+      <div class="banner ok" style="display:block" id="summaryMsg">Thanks for checking in!</div>
+      <div class="box">
+        <h2 id="visitsLeftText">Reward progress</h2>
+        <div class="muted2" id="servicesToday"></div>
+        <div class="muted2" id="rewardLine" style="margin-top:8px"></div>
+      </div>
+      <div class="actions" style="margin-top:18px"><button type="button" onclick="location.reload()">Done</button></div>
+    </div>
+  </div>
 
-  <script>
-    // === CONFIG ===
-    const WEBHOOK = 'https://princetonai.app.n8n.cloud/webhook/ai-checkin';
+  <script>
+    // === CONFIG ===
+    const WEBHOOK = 'https://princetonai.app.n8n.cloud/webhook/ai-checkin';
 
-    // === STATE ===
-    let submissionId = null;
-    let round1Phone = null;
-    let round1Services = [];
+    // === STATE ===
+    let submissionId = null;
+    let round1Phone = null;
+    let round1Services = [];
 
-    const $ = (q) => document.querySelector(q);
+    const $ = (q) => document.querySelector(q);
 
-    function clearBanners(){
-      ['okBanner','warnBanner','errBanner'].forEach(id=>{
-        const el=$('#'+id); el.style.display='none'; el.textContent='';
-      });
-    }
-    function showWarn(t){ const el=$('#warnBanner'); el.textContent=t; el.style.display='block'; }
-    function showErr(t){ const el=$('#errBanner'); el.textContent=t; el.style.display='block'; }
+    function clearBanners(){
+      ['okBanner','warnBanner','errBanner'].forEach(id=>{
+        const el=$('#'+id); el.style.display='none'; el.textContent='';
+      });
+    }
+    function showWarn(t){ const el=$('#warnBanner'); el.textContent=t; el.style.display='block'; }
+    function showErr(t){ const el=$('#errBanner'); el.textContent=t; el.style.display='block'; }
 
-    function digits10(v) {
-      const d = String(v||'').replace(/\D/g,'');
-      return d.length >= 10 ? d.slice(-10) : null;
-    }
+    function digits10(v) {
+      const d = String(v||'').replace(/\D/g,'');
+      return d.length >= 10 ? d.slice(-10) : null;
+    }
 
-    // YYYY-MM-DD mask (auto hyphens) + basic validation
-    (function initBirthdayMask(){
-      const el = $('#birthday');
-      if (!el) return;
+    // YYYY-MM-DD mask (auto hyphens) + basic validation
+    (function initBirthdayMask(){
+      const el = $('#birthday');
+      if (!el) return;
 
-      el.addEventListener('input', () => {
-        const digits = el.value.replace(/\D/g,'').slice(0,8); // YYYYMMDD (max 8)
-        let out = '';
-        if (digits.length <= 4) out = digits;
-        else if (digits.length <= 6) out = digits.slice(0,4) + '-' + digits.slice(4);
-        else out = digits.slice(0,4) + '-' + digits.slice(4,6) + '-' + digits.slice(6);
-        el.value = out;
-      });
+      el.addEventListener('input', () => {
+        const digits = el.value.replace(/\D/g,'').slice(0,8); // YYYYMMDD (max 8)
+        let out = '';
+        if (digits.length <= 4) out = digits;
+        else if (digits.length <= 6) out = digits.slice(0,4) + '-' + digits.slice(4);
+        else out = digits.slice(0,4) + '-' + digits.slice(4,6) + '-' + digits.slice(6);
+        el.value = out;
+      });
 
-      el.addEventListener('blur', () => {
-        const v = el.value.trim();
-        if (!v) return;
-        const m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-        const err = (msg) => { showWarn(msg); el.focus(); };
-        if (!m) return err('Please enter your birthday as YYYY-MM-DD.');
-        const y = +m[1], mo = +m[2], d = +m[3];
-        if (mo < 1 || mo > 12) return err('Month must be 01–12.');
-        if (d < 1 || d > 31) return err('Day must be 01–31.');
-        // Naive month-length check (good enough for UX; backend will normalize too)
-        const thirty = [4,6,9,11];
-        if (thirty.includes(mo) && d > 30) return err('That month has only 30 days.');
-        if (mo === 2 && d > 29) return err('February has at most 29 days.');
-      });
-    })();
+      el.addEventListener('blur', () => {
+        const v = el.value.trim();
+        if (!v) return;
+        const m = v.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        const err = (msg) => { showWarn(msg); el.focus(); };
+        if (!m) return err('Please enter your birthday as YYYY-MM-DD.');
+        const y = +m[1], mo = +m[2], d = +m[3];
+        if (mo < 1 || mo > 12) return err('Month must be 01–12.');
+        if (d < 1 || d > 31) return err('Day must be 01–31.');
+        // Naive month-length check (good enough for UX; backend will normalize too)
+        const thirty = [4,6,9,11];
+        if (thirty.includes(mo) && d > 30) return err('That month has only 30 days.');
+        if (mo === 2 && d > 29) return err('February has at most 29 days.');
+      });
+    })();
 
-    function selectedServices(){
-      return Array.from(document.querySelectorAll('input[name="svc"]:checked')).map(el=>el.value);
-    }
+    function selectedServices(){
+      return Array.from(document.querySelectorAll('input[name="svc"]:checked')).map(el=>el.value);
+    }
 
-    async function post(url, body){
-      const res = await fetch(url, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(body),
-      });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json();
-    }
+    async function post(url, body){
+      const res = await fetch(url, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    }
 
-    function visitsLeft(totalVisits){
-      if (!Number.isFinite(totalVisits)) return null;
-      const mod = totalVisits % 5;
-      return mod === 0 ? 5 : (5 - mod);
-    }
+    function visitsLeft(totalVisits){
+      if (!Number.isFinite(totalVisits)) return null;
+      const mod = totalVisits % 5;
+      return mod === 0 ? 5 : (5 - mod);
+    }
 
-    function renderSummary(r){
-      $('#formCard').style.display='none';
-      $('#summaryCard').style.display='block';
-      $('#summaryMsg').textContent = r.message || 'Thanks for checking in!';
-      const svc = Array.isArray(r.services) ? r.services : [];
-      $('#servicesToday').innerHTML = `<b>Services today:</b> ${svc.length?svc.join(', '):'—'}`;
-      const left = visitsLeft(Number(r.totalVisits));
-      $('#visitsLeftText').textContent = (left!=null)
-        ? `${left} visit${left===1?'':'s'} left before your next reward (Free Eyebrows).`
-        : 'Reward progress updated.';
-      $('#rewardLine').textContent = (r.hasReward && r.reward)
-        ? `🎉 Reward unlocked: ${r.reward.service || 'Reward'}.`
-        : 'Show reward code at checkout if present.';
-    }
+    function renderSummary(r){
+      $('#formCard').style.display='none';
+      $('#summaryCard').style.display='block';
+      $('#summaryMsg').textContent = r.message || 'Thanks for checking in!';
+      const svc = Array.isArray(r.services) ? r.services : [];
+      $('#servicesToday').innerHTML = `<b>Services today:</b> ${svc.length?svc.join(', '):'—'}`;
+      const left = visitsLeft(Number(r.totalVisits));
+      $('#visitsLeftText').textContent = (left!=null)
+        ? `${left} visit${left===1?'':'s'} left before your next reward (Free Eyebrows).`
+        : 'Reward progress updated.';
+      $('#rewardLine').textContent = (r.hasReward && r.reward)
+        ? `🎉 Reward unlocked: ${r.reward.service || 'Reward'}.`
+        : 'Show reward code at checkout if present.';
+    }
 
-    // === FORM HANDLER ===
-    $('#theForm').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      clearBanners();
-      const btn = $('#saveBtn');
-      btn.disabled = true;
+    // === FORM HANDLER ===
+    $('#theForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      clearBanners();
+      const btn = $('#saveBtn');
+      btn.disabled = true;
 
-      try {
-        if (!submissionId) {
-          // ROUND 1 — only phone + services
-          const phone = digits10($('#phone').value);
-          const services = selectedServices();
-          if (!phone) { showWarn('Please enter a valid phone number.'); btn.disabled=false; return; }
-          round1Phone = phone;
-          round1Services = services.slice();
+      try {
+        if (!submissionId) {
+          // ROUND 1 — only phone + services
+          const phone = digits10($('#phone').value);
+          const services = selectedServices();
+          if (!phone) { showWarn('Please enter a valid phone number.'); btn.disabled=false; return; }
+          round1Phone = phone;
+          round1Services = services.slice();
 
-          const r1 = await post(WEBHOOK, { phone, services });
+          const r1 = await post(WEBHOOK, { phone, services });
 
-          // ✅ NEW: handle immediate success (existing customer)
-          if (r1 && r1.success) {
-            renderSummary(r1);
-            return;
-          }
+          // ✅ NEW: handle immediate success (existing customer)
+          if (r1 && r1.success) {
+            renderSummary(r1);
+            return;
+          }
 
-          if (r1 && r1.askProfile) {
-            submissionId = r1.submissionId;
-            $('#profile-block').style.display = 'block';
-            showWarn('Please add your name and birthday to finish.');
-            btn.disabled = false;
-            return;
-          }
+          if (r1 && r1.askProfile) {
+            submissionId = r1.submissionId;
+            $('#profile-block').style.display = 'block';
+            showWarn('Please add your name and birthday to finish.');
+            btn.disabled = false;
+            return;
+          }
 
-          showErr('Something went wrong. Please try again.');
-          btn.disabled = false;
-          return;
-        }
+          showErr('Something went wrong. Please try again.');
+          btn.disabled = false;
+          return;
+        }
 
-        // ROUND 2 — send full profile
-        const phone2 = digits10($('#phone').value) || round1Phone;
-        const services2 = selectedServices();
-        const servicesFinal = services2.length ? services2 : (round1Services || []);
-        const payload = {
-          submissionId,
-          phone: phone2,
-          services: servicesFinal,
-          name: $('#fullName').value.trim(),
-          birthday: $('#birthday').value.trim(), // already YYYY-MM-DD
-          email: $('#email').value.trim(),
-          smsOptin: $('#smsOptin').checked,
-        };
+        // ROUND 2 — send full profile
+        const phone2 = digits10($('#phone').value) || round1Phone;
+        const services2 = selectedServices();
+        const servicesFinal = services2.length ? services2 : (round1Services || []);
+        const payload = {
+          submissionId,
+          phone: phone2,
+          services: servicesFinal,
+          name: $('#fullName').value.trim(),
+          birthday: $('#birthday').value.trim(), // already YYYY-MM-DD
+          email: $('#email').value.trim(),
+          smsOptin: $('#smsOptin').checked,
+        };
 
-        const r2 = await post(WEBHOOK, payload);
-        if (r2 && r2.success) {
-          renderSummary(r2);
-        } else if (r2 && r2.askProfile) {
-          showWarn('We still need your name and birthday. Please double-check and try again.');
-          btn.disabled = false;
-        } else {
-          showErr('Something went wrong finishing your check-in. Please try again.');
-          btn.disabled = false;
-        }
-      } catch (err) {
-        console.error(err);
-        showErr('Network error. Please try again.');
-        btn.disabled = false;
-      }
-    });
-  </script>
+        const r2 = await post(WEBHOOK, payload);
+        if (r2 && r2.success) {
+          renderSummary(r2);
+        } else if (r2 && r2.askProfile) {
+          showWarn('We still need your name and birthday. Please double-check and try again.');
+          btn.disabled = false;
+        } else {
+          showErr('Something went wrong finishing your check-in. Please try again.');
+          btn.disabled = false;
+        }
+      } catch (err) {
+        console.error(err);
+        showErr('Network error. Please try again.');
+        btn.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
