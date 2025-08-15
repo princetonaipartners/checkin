@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Welcome to Indian Bridal and Beauty Services - Check-In to Earn Rewards!</title>
+  <title>Welcome to Indian Bridal and Beauty Services</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root{
@@ -18,7 +18,7 @@
       color:var(--ink);
     }
     .wrap{max-width:840px;margin:36px auto;padding:0 20px}
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px; position:relative;}
     h1{margin:0 0 8px;font-weight:800;letter-spacing:.2px}
     .sub{color:var(--muted);margin-bottom:16px}
     .banner{display:none;margin-bottom:16px;padding:12px 14px;border-radius:12px;font-weight:600}
@@ -45,14 +45,39 @@
     .summary .box{background:#f7f6ff;border:1px solid #ecebff;border-radius:14px;padding:18px}
     .summary h2{margin:0 0 8px}
     .muted2{color:#555}
+
+    /* ---- Loading overlay (tiny + safe) ---- */
+    .loading[hidden]{display:none !important;}
+    .loading{
+      position:absolute; inset:0;
+      background:rgba(255,255,255,.6);
+      border-radius:var(--radius);
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      z-index:5;
+    }
+    .spinner{
+      width:22px;height:22px;border-radius:50%;
+      border:3px solid rgba(107,77,246,.2);
+      border-top-color: var(--brand);
+      animation:spin 0.9s linear infinite;
+    }
+    .loading-text{color:#3f3f46;font-weight:700}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
     @media (max-width:700px){.two{grid-template-columns:1fr}.svc-grid{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="card" id="formCard">
+    <div class="card" id="formCard" aria-live="polite">
+      <!-- Loading overlay -->
+      <div class="loading" id="loading" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <div class="loading-text">Just a sec…</div>
+      </div>
+
       <h1>Welcome to Indian Bridal and Beauty Services</h1>
-      <div class="sub">Check-in to earn rewards!</div>
+      <div class="sub">Check-in to Earn Rewards!</div>
 
       <div class="banner ok" id="okBanner" role="status" aria-live="polite"></div>
       <div class="banner warn" id="warnBanner" role="status" aria-live="polite"></div>
@@ -147,6 +172,22 @@
     function showWarn(t){ const el=$('#warnBanner'); el.textContent=t; el.style.display='block'; }
     function showErr(t){ const el=$('#errBanner'); el.textContent=t; el.style.display='block'; }
 
+    // Simple loading overlay toggler
+    function setLoading(on){
+      const overlay = $('#loading');
+      const btn = $('#saveBtn');
+      if (on){
+        overlay.hidden = false;
+        btn.disabled = true;
+        $('#formCard').setAttribute('aria-busy','true');
+      } else {
+        overlay.hidden = false; // default to hidden = false? No — hide it:
+        overlay.hidden = true;
+        $('#formCard').removeAttribute('aria-busy');
+        btn.disabled = false; // caller may disable again if needed
+      }
+    }
+
     function digits10(v) {
       const d = String(v||'').replace(/\D/g,'');
       return d.length >= 10 ? d.slice(-10) : null;
@@ -175,7 +216,6 @@
         const y = +m[1], mo = +m[2], d = +m[3];
         if (mo < 1 || mo > 12) return err('Month must be 01–12.');
         if (d < 1 || d > 31) return err('Day must be 01–31.');
-        // Naive month-length check (good enough for UX; backend will normalize too)
         const thirty = [4,6,9,11];
         if (thirty.includes(mo) && d > 30) return err('That month has only 30 days.');
         if (mo === 2 && d > 29) return err('February has at most 29 days.');
@@ -203,6 +243,7 @@
     }
 
     function renderSummary(r){
+      setLoading(false);
       $('#formCard').style.display='none';
       $('#summaryCard').style.display='block';
       $('#summaryMsg').textContent = r.message || 'Thanks for checking in!';
@@ -233,23 +274,27 @@
           round1Phone = phone;
           round1Services = services.slice();
 
+          setLoading(true);
           const r1 = await post(WEBHOOK, { phone, services });
 
-          // ✅ NEW: handle immediate success (existing customer)
+          // Existing customer: go straight to summary
           if (r1 && r1.success) {
             renderSummary(r1);
             return;
           }
 
+          // New customer: show profile block
           if (r1 && r1.askProfile) {
             submissionId = r1.submissionId;
             $('#profile-block').style.display = 'block';
             showWarn('Please add your name and birthday to finish.');
+            setLoading(false);
             btn.disabled = false;
             return;
           }
 
           showErr('Something went wrong. Please try again.');
+          setLoading(false);
           btn.disabled = false;
           return;
         }
@@ -268,19 +313,23 @@
           smsOptin: $('#smsOptin').checked,
         };
 
+        setLoading(true);
         const r2 = await post(WEBHOOK, payload);
         if (r2 && r2.success) {
           renderSummary(r2);
         } else if (r2 && r2.askProfile) {
           showWarn('We still need your name and birthday. Please double-check and try again.');
+          setLoading(false);
           btn.disabled = false;
         } else {
           showErr('Something went wrong finishing your check-in. Please try again.');
+          setLoading(false);
           btn.disabled = false;
         }
       } catch (err) {
         console.error(err);
         showErr('Network error. Please try again.');
+        setLoading(false);
         btn.disabled = false;
       }
     });
